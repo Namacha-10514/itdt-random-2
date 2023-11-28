@@ -52,7 +52,7 @@ song_db_dp = json.loads(res_dp.text)
 
 kanji_db = json.loads(res_kj)
 
-TOKEN = "OTg3MzI2MzY2MTA0MDQ3Njc2.GKXgG9.9ZrZQT__v9c9kgEFq_j8YK_OTamAwo4oOV4YVw"
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 bot = discord.Bot(intents=intents)
 
