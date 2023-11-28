@@ -904,7 +904,7 @@ async def _slash_random_diffname(ctx):
                    description="漢字(漢検一級範囲内)をランダムに1~4文字表示します。")
 async def _slash_random_kanji(ctx):
   result = ""
-  for i in range(random.randint(1, 4)):
+  for i in range(random.randint(1, 5)):
     rnd = random.randrange(len(kanji_db))
     result += kanji_db[rnd]
   await ctx.respond(result)
@@ -1020,5 +1020,5 @@ async def ad_send(ctx):
   await ctx.respond(embed=embed)
 
 keep_alive()
-print(TOKEN)
+#print(TOKEN)
 bot.run(TOKEN)
