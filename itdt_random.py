@@ -633,11 +633,11 @@ async def _slash_dp_random_range(ctx, min: Option(int,
     error = True
   else:
     while not (fnlevel >= min and fnlevel <= max):
-      rnd = random.randrange(len(song_db))
+      rnd = random.randrange(len(song_db_dp))
       if song_db_dp[rnd]['level'] in ["???", "Φ"]:
         fnlevel = 101
       else:
-        fnlevel = int(song_db[rnd]['level'])
+        fnlevel = int(song_db_dp[rnd]['level'])
 
   if error != True:
     title = song_db_dp[rnd]['title'].replace('_', '\_')
