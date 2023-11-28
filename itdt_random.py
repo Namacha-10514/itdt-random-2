@@ -634,15 +634,15 @@ async def _slash_dp_random_range(ctx, min: Option(int,
   else:
     while not (fnlevel >= min and fnlevel <= max):
       rnd = random.randrange(len(song_db))
-      if song_db[rnd]['level'] in ["???", "Φ"]:
+      if song_db_dp[rnd]['level'] in ["???", "Φ"]:
         fnlevel = 101
       else:
         fnlevel = int(song_db[rnd]['level'])
 
   if error != True:
-    title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = song_db[rnd]['level']
-    url = song_db[rnd]['url']
+    title = song_db_dp[rnd]['title'].replace('_', '\_')
+    chlevel = song_db_dp[rnd]['level']
+    url = song_db_dp[rnd]['url']
     embed = discord.Embed(title="範囲ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
     embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
