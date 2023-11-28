@@ -610,6 +610,44 @@ async def _slash_dp_random(ctx, level: Option(str,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
+@bot.command(
+  name="dp_random_range",
+  description="範囲内の難易度から1曲ランダムに表示します。???,Φは対象外です。",
+)
+async def _slash_dp_random_range(ctx, min: Option(int,
+                                              "最低難易度を指定します(空欄で0)",
+                                              default=0),
+                                max: Option(int,
+                                              "最高難易度を指定します(空欄で15)",
+                                              default=15)):
+  error = False
+  fnlevel = -1
+  if min < -1: min = 0
+  if max > 100: max = 99
+  if min > max:
+    print('incorrect')
+    embed_err = discord.Embed(title="エラー",
+                              description="入力形式が正しくありません。",
+                              color=0xff8080)
+    await ctx.respond(embed=embed_err, ephemeral=True)
+    error = True
+  else:
+    while not (fnlevel >= min and fnlevel <= max):
+      rnd = random.randrange(len(song_db))
+      if song_db[rnd]['level'] in ["???", "Φ"]:
+        fnlevel = 101
+      else:
+        fnlevel = int(song_db[rnd]['level'])
+
+  if error != True:
+    title = song_db[rnd]['title'].replace('_', '\_')
+    chlevel = song_db[rnd]['level']
+    url = song_db[rnd]['url']
+    embed = discord.Embed(title="範囲ランダム選曲", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
 
 #大会用
 @bot.slash_command(name="random_tournament",
