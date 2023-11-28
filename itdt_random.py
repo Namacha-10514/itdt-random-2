@@ -1020,5 +1020,4 @@ async def ad_send(ctx):
   await ctx.respond(embed=embed)
 
 keep_alive()
-#print(TOKEN)
 bot.run(TOKEN)
