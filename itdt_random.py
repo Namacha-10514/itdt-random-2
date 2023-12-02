@@ -861,7 +861,7 @@ async def _slash_bingo(ctx):
 
 @bot.slash_command(name="mememe_dice", description="「めめめのサイコロが！」を表示します。")
 async def _slash_mememe_dice(ctx):
-  rnd = random.randrange(1, 2)
+  rnd = random.randint(1, 2)
   if rnd == 1:
     await ctx.respond("https://www.nicovideo.jp/watch/sm34094775")
   elif rnd == 2:
@@ -942,7 +942,7 @@ async def _slash_random_diffname(ctx):
                    description="漢字(漢検一級範囲内)をランダムに1~4文字表示します。")
 async def _slash_random_kanji(ctx):
   result = ""
-  for i in range(random.randint(1, 5)):
+  for i in range(random.randint(1, 4)):
     rnd = random.randrange(len(kanji_db))
     result += kanji_db[rnd]
   await ctx.respond(result)
