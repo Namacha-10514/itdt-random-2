@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 intents = discord.Intents.default()
 intents.members = True
 
-db_url = "https://script.google.com/macros/s/AKfycbyfoaulAWtib6ixAFiqtoBc7LXGkUvZ_D6sEfXNsiMRLXHsvQSGf1Ir/exec"
+db_url = "https://script.google.com/macros/s/AKfycbzNnzDMS2srhdu0oz7zt7rux7ZZCD3q5D3XKwesEhzjvJlhePu7qBMv_QjesdAynv40/exec"
 db_url_sl = "https://script.google.com/macros/s/AKfycbxpDx-9KkQhuFHDbmfR75XtUFHrN_eRWh5PoM_n4mLbNuBrddwfcrkxA7WNcPg2b8_MLA/exec"
 db_url_lg = "https://script.google.com/macros/s/AKfycbw5CkdE-CoDZxDH7SJjLz0Pf4HuRU25b5uUOmcoOaPtRfwWu8-MdksWDTZuWApprCTQ/exec"
 db_url_st = "https://script.google.com/macros/s/AKfycbw-KA9EsIdYidNePnDzWYbsvpbDwSti3jRvJb0uhU7CZDJBzb229rGFxM1zmMRxKOC6sg/exec"
@@ -812,7 +812,6 @@ async def _slash_sega_random(ctx, ):
   embed.add_field(name="難易度", value="★" + chlevel, inline=False)
   embed.add_field(name="URL", value=url, inline=False)
   await ctx.respond(embed=embed)
-
 
 @bot.command(
   name="random_keyconf",
