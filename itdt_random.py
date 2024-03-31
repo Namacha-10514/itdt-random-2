@@ -937,7 +937,7 @@ async def _slash_random_diffname(ctx):
   await ctx.respond("[" + response.json()[0] + "]")
 
 @bot.slash_command(name="itdt_random", description="ITDT Random")
-async def _slash_random_diffname(ctx):
+async def _slash_itdt_random(ctx):
   word_i  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=i&type=capitalized')
   word_t1 = requests.get('https://random-word-api.vercel.app/api?words=1&letter=t&type=capitalized')
   word_d  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=d&type=capitalized')
