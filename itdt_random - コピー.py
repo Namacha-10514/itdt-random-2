@@ -149,7 +149,7 @@ async def _slash_random(ctx, level: Option(str,
     rnd = random.randrange(len(song_db))
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed = discord.Embed(title="ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -166,7 +166,7 @@ async def _slash_random_multi(ctx, times: Option(int,
   for i in range(times):
     rnd = random.randrange(len(song_db))
     title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     embed.add_field(name="[" + str(i + 1) + "]",
                     value="★" + chlevel + " " + title,
                     inline=False)
@@ -213,7 +213,7 @@ async def _slash_random_range_multi(ctx, times: Option(int,
         else:
           fnlevel = int(song_db[rnd]['level'])
       title = song_db[rnd]['title'].replace('_', '\_')
-      chlevel = random.choice(all_levels)
+      chlevel = song_db[rnd]['level']
       embed.add_field(name="[" + str(i + 1) + "]",
                       value="★" + chlevel + " " + title,
                       inline=False)
@@ -232,7 +232,7 @@ async def _slash_random_illegular(ctx, ):
     fnlevel = song_db[rnd]['level']
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed = discord.Embed(title="特殊難易度ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -325,7 +325,7 @@ async def _slash_random_with_option(
                      str(random.randrange(1, 1000)) + "]")
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed = discord.Embed(title="ランダム選曲(オプション付き)", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -366,7 +366,7 @@ async def _slash_random_range(ctx, min: Option(int,
 
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed = discord.Embed(title="範囲ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -394,7 +394,7 @@ async def _slash_random_nd(ctx, nd: Option(str, "ND名を指定します", requi
       break
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed = discord.Embed(title="ND指定ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -602,7 +602,7 @@ async def _slash_dp_random(ctx, level: Option(str,
     rnd = random.randrange(len(song_db_dp))
   if error != True:
     title = song_db_dp[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels_dp)
+    chlevel = song_db_dp[rnd]['level']
     url = song_db_dp[rnd]['url']
     embed = discord.Embed(title="ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -641,7 +641,7 @@ async def _slash_dp_random_range(ctx, min: Option(int,
 
   if error != True:
     title = song_db_dp[rnd]['title'].replace('_', '\_')
-    chlevel = random.choice(all_levels_dp)
+    chlevel = song_db_dp[rnd]['level']
     url = song_db_dp[rnd]['url']
     embed = discord.Embed(title="範囲ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
@@ -936,14 +936,6 @@ async def _slash_random_diffname(ctx):
   response = requests.get('https://random-word-api.herokuapp.com/word')
   await ctx.respond("[" + response.json()[0] + "]")
 
-@bot.slash_command(name="random_groupname", description="ITDT Random")
-async def _slash_itdt_random_2(ctx):
-  word_i  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=i&type=capitalized')
-  word_t1 = requests.get('https://random-word-api.vercel.app/api?words=1&letter=t&type=capitalized')
-  word_d  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=d&type=capitalized')
-  word_t2 = requests.get('https://random-word-api.vercel.app/api?words=1&letter=t&type=capitalized')
-  result_eng = word_i.json()[0] + " " + word_t1.json()[0] + " " + word_d.json()[0] + " " + word_t2.json()[0] + " "
-  await ctx.respond(result_eng)
 
 @bot.slash_command(name="random_kanji",
                    description="漢字(漢検一級範囲内)をランダムに1~4文字表示します。")
@@ -981,7 +973,7 @@ async def _slash_ai_chan(ctx, level: Option(str,
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
     subtitle = song_db[rnd]['subtitle'].replace('_', '\_')
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     ai_responce = ai_chan[random.randrange(len(ai_chan))].format(
       title, subtitle)
@@ -1042,7 +1034,7 @@ async def loop():
     rnd = random.randrange(len(song_db))
     channel = bot.get_channel(987348863641878528)
     title = song_db[rnd]['title']
-    chlevel = random.choice(all_levels)
+    chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed = discord.Embed(title="今日の譜面", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
