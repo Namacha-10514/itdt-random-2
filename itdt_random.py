@@ -936,6 +936,14 @@ async def _slash_random_diffname(ctx):
   response = requests.get('https://random-word-api.herokuapp.com/word')
   await ctx.respond("[" + response.json()[0] + "]")
 
+@bot.slash_command(name="itdt_random", description="ITDT Random")
+async def _slash_random_diffname(ctx):
+  word_i  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=i&type=capitalized')
+  word_t1 = requests.get('https://random-word-api.vercel.app/api?words=1&letter=t&type=capitalized')
+  word_d  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=d&type=capitalized')
+  word_t2 = requests.get('https://random-word-api.vercel.app/api?words=1&letter=t&type=capitalized')
+  result_eng = word_i.json()[0] + " " + word_t1.json()[0] + " " + word_d.json()[0] + " " + word_t2.json()[0] + " "
+  await ctx.respond(result_eng)
 
 @bot.slash_command(name="random_kanji",
                    description="漢字(漢検一級範囲内)をランダムに1~4文字表示します。")
