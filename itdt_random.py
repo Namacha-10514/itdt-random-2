@@ -990,6 +990,37 @@ async def _slash_ai_chan(ctx, level: Option(str,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
+@bot.slash_command(name="s_random", description="難易度表から1曲ランダムに表示します。レベルもランダムに決定されます。")
+async def _slash_s_random(ctx, level: Option(str,
+                                           "難易度を指定します(空欄で全曲)",
+                                           required=False)):
+  error = False
+  fnlevel = None
+  if level:
+    print('not empty')
+    if level not in all_levels:
+      print('not defined')
+      embed_err = discord.Embed(title="エラー",
+                                description="指定された難易度は存在しません。",
+                                color=0xff8080)
+      await ctx.respond(embed=embed_err, ephemeral=True)
+      error = True
+    else:
+      while fnlevel != level:
+        #print('searching')
+        rnd = random.randrange(len(song_db))
+        fnlevel = random.choice(all_levels)
+  else:
+    rnd = random.randrange(len(song_db))
+  if error != True:
+    title = song_db[rnd]['title'].replace('_', '\_')
+    chlevel = fnlevel
+    url = song_db[rnd]['url']
+    embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value="★" + chlevel, inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
 
 # @bot.slash_command(
 #     name="transform",
