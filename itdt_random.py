@@ -1006,12 +1006,11 @@ async def _slash_s_random(ctx, level: Option(str,
       await ctx.respond(embed=embed_err, ephemeral=True)
       error = True
     else:
-      while fnlevel != level:
-        #print('searching')
-        rnd = random.randrange(len(song_db))
-        fnlevel = random.choice(all_levels)
+      rnd = random.randrange(len(song_db))
+      fnlevel = level
   else:
     rnd = random.randrange(len(song_db))
+    fnlevel = random.choice(all_levels)
   if error != True:
     title = song_db[rnd]['title'].replace('_', '\_')
     chlevel = fnlevel
@@ -1020,6 +1019,54 @@ async def _slash_s_random(ctx, level: Option(str,
     embed.add_field(name="曲名", value=title, inline=False)
     embed.add_field(name="難易度", value="★" + chlevel, inline=False)
     embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
+
+@bot.slash_command(name="s_random_range_multi",
+                   description="範囲内の難易度から複数曲ランダムに表示します。レベルもランダムに決定されます。")
+async def _slash_s_random_range_multi(ctx, times: Option(int,
+                                                       "抽選曲数を指定します(最大25曲)",
+                                                       required=True),
+                                    min: Option(int,
+                                                "最低難易度を指定します(空欄で0)",
+                                                default=0),
+                                    max: Option(int,
+                                                "最高難易度を指定します(空欄で25)",
+                                                default=25)):
+  error = False
+  embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+  if min < -1: min = 0
+  if max > 102: max = 99
+  if min > max:
+    print('incorrect')
+    embed_err = discord.Embed(title="エラー",
+                              description="入力形式が正しくありません。",
+                              color=0xff8080)
+    await ctx.respond(embed=embed_err, ephemeral=True)
+    error = True
+  if error != True:
+    for i in range(times):
+      title = ""
+      chlevel = ""
+      fnlevel = -1
+      fnlevelstr = ""
+      while not (fnlevel >= min and fnlevel <= max):
+        rnd = random.randrange(len(song_db))
+        fnlevelstr = random.choice(all_levels)
+        if fnlevelstr == "???":
+          fnlevel = 101
+        elif fnlevelstr == "(^^)":
+          fnlevel = 102
+        elif fnlevelstr == "∞":
+          fnlevel = 103
+        elif fnlevelstr == "NaN":
+          fnlevel = 104
+        else:
+          fnlevel = int(fnlevelstr)
+      title = song_db[rnd]['title'].replace('_', '\_')
+      chlevel = fnlevelstr
+      embed.add_field(name="[" + str(i + 1) + "]",
+                      value="★" + chlevel + " " + title,
+                      inline=False)
     await ctx.respond(embed=embed)
 
 # @bot.slash_command(
