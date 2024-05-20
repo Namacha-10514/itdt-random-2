@@ -719,6 +719,42 @@ async def _slash_search_title(ctx, word: Option(str,
       count += 1
     await ctx.respond(embed=embed, ephemeral=ephemeral)
 
+@bot.slash_command(name="dp_search_title", description="DP譜面をタイトル・差分名で検索します。(2文字以上)")
+async def _slash_dp_search_title(ctx, word: Option(str,
+                                                "検索語句を入力します",
+                                                required=False),
+                              ephemeral: Option(
+                                bool,
+                                "Trueにすると自分にしか表示されなくなります。(デフォルトはFalse)",
+                                required=False,
+                                default=False)):
+  error = False
+  if len(word) < 2:
+    embed_err = discord.Embed(title="エラー",
+                              description="検索語句は2文字以上にしてください。",
+                              color=0xff8080)
+    await ctx.respond(embed=embed_err, ephemeral=True)
+    error = True
+  if error != True:
+    found_num = []
+    for i in range(len(song_db_dp)):
+      if word in song_db_dp[i]['title']:
+        found_num.append(i)
+    embed = discord.Embed(title="検索結果", color=0xff8080)
+    count = 1
+    if not found_num:
+      embed.add_field(name="0.",
+                      value="指定された語句を含む譜面が見つかりませんでした。",
+                      inline=False)
+    for i in found_num:
+      title = song_db_dp[i]['title'].replace('_', '\_')
+      chlevel = song_db_dp[i]['level']
+      url = song_db_dp[i]['url']
+      embed.add_field(name=str(count) + ".",
+                      value="Φ" + chlevel + " " + title + "\n" + url,
+                      inline=False)
+      count += 1
+    await ctx.respond(embed=embed, ephemeral=ephemeral)
 
 @bot.slash_command(name="score")
 async def _slash_score(ctx, great: Option(int, "良の数", required=True),
@@ -768,6 +804,10 @@ async def _slash_leveljudge(ctx, chart: Option(str, required=True)):
   level = all_levels[random.randrange(len(all_levels))]
   await ctx.respond(f"{chart}は★{level}です。")
 
+@bot.slash_command(name="dp_leveljudge")
+async def _slash_dp_leveljudge(ctx, chart: Option(str, required=True)):
+  level = all_levels_dp[random.randrange(len(all_levels_dp))]
+  await ctx.respond(f"{chart}はΦ{level}です。")
 
 @bot.slash_command(name="bpmjudge")
 async def _slash_bpmudge(ctx, chart: Option(str, required=True)):
@@ -835,27 +875,27 @@ async def _slash_easy_random(ctx, min: Option(int, required=True),
   await ctx.respond(rnd)
 
 
-@bot.slash_command(name="bingo", description="ビンゴの条件を表示します。")
-async def _slash_bingo(ctx):
+# @bot.slash_command(name="bingo", description="ビンゴの条件を表示します。")
+# async def _slash_bingo(ctx):
 
-  terms = ""
-  rnd = random.randrange(1, 100)
-  if rnd <= 1:
-    #1%
-    terms = "FullCombo(フルコンボをすることで開けることができます)"
-  elif rnd <= 5:
-    #4%
-    terms = "HardClear(ハードクリアをすることで開けることができます)"
-  elif rnd <= 30:
-    #25%
-    terms = "Clear(クリアをすることで開けることができます)"
-  else:
-    #70%
-    terms = "Hit(無条件で開けることができます)"
+#   terms = ""
+#   rnd = random.randrange(1, 100)
+#   if rnd <= 1:
+#     #1%
+#     terms = "FullCombo(フルコンボをすることで開けることができます)"
+#   elif rnd <= 5:
+#     #4%
+#     terms = "HardClear(ハードクリアをすることで開けることができます)"
+#   elif rnd <= 30:
+#     #25%
+#     terms = "Clear(クリアをすることで開けることができます)"
+#   else:
+#     #70%
+#     terms = "Hit(無条件で開けることができます)"
 
-  embed = discord.Embed(title="ITDTビンゴ", color=0xff8080)
-  embed.add_field(name="条件", value=terms, inline=False)
-  await ctx.respond(embed=embed)
+#   embed = discord.Embed(title="ITDTビンゴ", color=0xff8080)
+#   embed.add_field(name="条件", value=terms, inline=False)
+#   await ctx.respond(embed=embed)
 
 
 @bot.slash_command(name="mememe_dice", description="「めめめのサイコロが！」を表示します。")
