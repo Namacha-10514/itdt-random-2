@@ -187,7 +187,7 @@ async def _slash_random_range_multi(ctx, times: Option(int,
   error = False
   embed = discord.Embed(title="ランダム選曲", color=0xff8080)
   if min < -1: min = 0
-  if max > 102: max = 99
+  if max > 104: max = 99
   if min > max:
     print('incorrect')
     embed_err = discord.Embed(title="エラー",
@@ -649,6 +649,63 @@ async def _slash_dp_random_range(ctx, min: Option(int,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
+@bot.slash_command(name="dp_random_multi", description="DP難易度表から複数曲ランダムに表示します。")
+async def _slash_dp_random_multi(ctx, times: Option(int,
+                                                 "抽選曲数を指定します(最大25曲)",
+                                                 required=True)):
+  embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+  for i in range(times):
+    rnd = random.randrange(len(song_db_dp))
+    title = song_db_dp[rnd]['title'].replace('_', '\_')
+    chlevel = song_db_dp[rnd]['level']
+    embed.add_field(name="[" + str(i + 1) + "]",
+                    value="Φ" + chlevel + " " + title,
+                    inline=False)
+  await ctx.respond(embed=embed)
+
+
+@bot.slash_command(name="dp_random_range_multi",
+                   description="範囲内の難易度からDP譜面を複数曲ランダムに表示します。")
+async def _slash_dp_random_range_multi(ctx, times: Option(int,
+                                                       "抽選曲数を指定します(最大25曲)",
+                                                       required=True),
+                                    min: Option(int,
+                                                "最低難易度を指定します(空欄で0)",
+                                                default=0),
+                                    max: Option(int,
+                                                "最高難易度を指定します(空欄で15)",
+                                                default=15)):
+  error = False
+  embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+  if min < -1: min = 0
+  if max > 102: max = 99
+  if min > max:
+    print('incorrect')
+    embed_err = discord.Embed(title="エラー",
+                              description="入力形式が正しくありません。",
+                              color=0xff8080)
+    await ctx.respond(embed=embed_err, ephemeral=True)
+    error = True
+  if error != True:
+    for i in range(times):
+      title = ""
+      chlevel = ""
+      fnlevel = -1
+      while not (fnlevel >= min and fnlevel <= max):
+        rnd = random.randrange(len(song_db_dp))
+        if song_db_dp[rnd]['level'] in ["???"]:
+          fnlevel = 101
+        elif song_db_dp[rnd]['level'] in ["Φ"]:
+          fnlevel = 102
+        else:
+          fnlevel = int(song_db_dp[rnd]['level'])
+      title = song_db_dp[rnd]['title'].replace('_', '\_')
+      chlevel = song_db_dp[rnd]['level']
+      embed.add_field(name="[" + str(i + 1) + "]",
+                      value="Φ" + chlevel + " " + title,
+                      inline=False)
+    await ctx.respond(embed=embed)
+    
 #大会用
 @bot.slash_command(name="random_tournament",
                    description="大会IDを指定して1曲ランダムに表示します。")
@@ -1075,7 +1132,7 @@ async def _slash_s_random_range_multi(ctx, times: Option(int,
   error = False
   embed = discord.Embed(title="ランダム選曲", color=0xff8080)
   if min < -1: min = 0
-  if max > 102: max = 99
+  if max > 104: max = 99
   if min > max:
     print('incorrect')
     embed_err = discord.Embed(title="エラー",
