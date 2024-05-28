@@ -926,11 +926,19 @@ async def _slash_random_keyconf(ctx):
 
 
 @bot.slash_command(name="random_number", description="指定された範囲内の乱数を表示します。")
-async def _slash_easy_random(ctx, min: Option(int, required=True),
+async def _slash_random_number(ctx, min: Option(int, required=True),
                              max: Option(int, required=True)):
   rnd = random.randint(min, max)
   await ctx.respond(rnd)
 
+@bot.slash_command(name="random_number_multi", description="指定された範囲内の乱数を複数表示します。")
+async def _slash_random_number_multi(ctx, min:   Option(int, required=True),
+                                          max:   Option(int, required=True),
+                                          times: Option(int, required=True)):
+  rnd = []
+  for i in range(times):
+    rnd.append(random.randint(min, max))
+  await ctx.respond(rnd)
 
 # @bot.slash_command(name="bingo", description="ビンゴの条件を表示します。")
 # async def _slash_bingo(ctx):
