@@ -1216,21 +1216,35 @@ async def loop():
     res_sl = requests.get(db_url_sl)
     res_lg = requests.get(db_url_lg)
     res_st = requests.get(db_url_st)
+    res_dp = requests.get(db_url_dp)
     song_db = json.loads(res.text)
     song_db_sl = json.loads(res_sl.text)
     song_db_lg = json.loads(res_lg.text)
     song_db_st = json.loads(res_st.text)
+    song_db_dp = json.loads(res_dp.text)
     print('songdb reloaded')
-
-    rnd = random.randrange(len(song_db))
+    
+    db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
     channel = bot.get_channel(987348863641878528)
-    title = song_db[rnd]['title']
-    chlevel = song_db[rnd]['level']
-    url = song_db[rnd]['url']
-    embed = discord.Embed(title="今日の譜面", color=0xff8080)
-    embed.add_field(name="曲名", value=title, inline=False)
-    embed.add_field(name="難易度", value="★" + chlevel, inline=False)
-    embed.add_field(name="URL", value=url, inline=False)
+
+    if (db_shuffle < len(song_db)):
+      rnd = db_shuffle
+      title = song_db[rnd]['title']
+      chlevel = song_db[rnd]['level']
+      url = song_db[rnd]['url']
+      embed = discord.Embed(title="今日の譜面", color=0xff8080)
+      embed.add_field(name="曲名", value=title, inline=False)
+      embed.add_field(name="難易度", value="★" + chlevel, inline=False)
+      embed.add_field(name="URL", value=url, inline=False)
+    else:
+      rnd = db_shuffle - len(song_db)
+      title = song_db_dp[rnd]['title']
+      chlevel = song_db_dp[rnd]['level']
+      url = song_db_dp[rnd]['url']
+      embed = discord.Embed(title="今日の譜面", color=0xff8080)
+      embed.add_field(name="曲名", value=title, inline=False)
+      embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
+      embed.add_field(name="URL", value=url, inline=False)
     await channel.send(embed=embed)
 
 
