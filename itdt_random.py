@@ -1095,6 +1095,33 @@ async def _slash_ai_chan(ctx, level: Option(str,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
+@bot.slash_command(name="random_both", description="SP/DP難易度表から1曲ランダムに表示します。")
+async def _slash_random_both(ctx, level: Option(str,
+                                           "難易度を指定します(空欄で全曲)",
+                                           required=False)):
+    db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
+
+    print(db_shuffle < len(song_db))
+    if (db_shuffle < len(song_db)):
+      rnd = db_shuffle
+      title = song_db[rnd]['title']
+      chlevel = song_db[rnd]['level']
+      url = song_db[rnd]['url']
+      embed = discord.Embed(title="今日の譜面", color=0xff8080)
+      embed.add_field(name="曲名", value=title, inline=False)
+      embed.add_field(name="難易度", value="★" + chlevel, inline=False)
+      embed.add_field(name="URL", value=url, inline=False)
+    else:
+      rnd = db_shuffle - len(song_db)
+      title = song_db_dp[rnd]['title']
+      chlevel = song_db_dp[rnd]['level']
+      url = song_db_dp[rnd]['url']
+      embed = discord.Embed(title="今日の譜面", color=0xff8080)
+      embed.add_field(name="曲名", value=title, inline=False)
+      embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
+      embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
+
 @bot.slash_command(name="s_random", description="難易度表から1曲ランダムに表示します。レベルもランダムに決定されます。")
 async def _slash_s_random(ctx, level: Option(str,
                                            "難易度を指定します(空欄で全曲)",
