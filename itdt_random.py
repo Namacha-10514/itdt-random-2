@@ -967,7 +967,7 @@ async def _slash_random_number_multi(ctx, min:   Option(int, required=True),
 async def _slash_mememe_dice(ctx):
   rnd = random.randint(1, 2)
   if rnd == 1:
-    await ctx.respond("https://www.nicovideo.jp/watch_tmp/sm34094775")
+    await ctx.respond("https://www.nicovideo.jp/watch/sm34094775")
   elif rnd == 2:
     await ctx.respond("https://soundcloud.com/araittt/off24bit")
 
