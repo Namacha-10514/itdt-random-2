@@ -126,7 +126,7 @@ ai_chan = [
 
 
 @bot.slash_command(name="random", description="難易度表から1曲ランダムに表示します。")
-async def _slash_random(ctx, level: Option(all_levels,
+async def _slash_random(ctx, level: Option(str,
                                            "難易度を指定します(空欄で全曲)",
                                            required=False)):
   error = False
