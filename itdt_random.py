@@ -842,7 +842,7 @@ async def _slash_score(ctx, great: Option(int, "良の数", required=True),
     await ctx.respond(embed=embed_err, ephemeral=True)
 
 @bot.slash_command(name="frequency")
-async def _slash_frequency(ctx, freq: Option(float, "楽曲キー変更量", required=True)):
+async def _slash_frequency(ctx, freq: Option(float, "楽曲キー変更量", required=True)): # type: ignore
     ps = str(round(2**(freq/12),6))
     ps_str = ps + "0"*(8-len(ps))  
     ps_txt = "Playspeed=" + ps_str
@@ -856,9 +856,7 @@ async def _slash_frequency(ctx, freq: Option(float, "楽曲キー変更量", req
                               color=0xff8080)
       await ctx.respond(embed=embed_err, ephemeral=True)
     else:
-      await ctx.respond(f"```{ps_txt}\n{j1_txt}\n{j2_txt}\n{j3_txt}```")
-
-
+      await ctx.respond(f"{ps_txt}\n{j1_txt}\n{j2_txt}\n{j3_txt}")
 
 @bot.slash_command(name="kill")
 async def _slash_kill(ctx):
