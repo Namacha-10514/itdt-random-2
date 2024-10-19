@@ -841,6 +841,24 @@ async def _slash_score(ctx, great: Option(int, "良の数", required=True),
                               color=0xff8080)
     await ctx.respond(embed=embed_err, ephemeral=True)
 
+@bot.slash_command(name="frequency")
+async def _slash_frequency(ctx, freq: Option(float, "楽曲キー変更量", required=True)):
+    ps = str(round(2**(freq/12),6))
+    ps_str = ps + "0"*(8-len(ps))  
+    ps_txt = "Playspeed=" + ps_str
+    ps = float(ps)
+    j1_txt = "JudgeRangeGreat=" + str(int(60*ps))
+    j2_txt = "JudgeRangeGood=" + str(int(120*ps))
+    j3_txt = "JudgeRangeBad=" + str(int(240*ps))
+    if ps > 4:
+      embed_err = discord.Embed(title="エラー",
+                              description="Playspeedが4を超えました。",
+                              color=0xff8080)
+      await ctx.respond(embed=embed_err, ephemeral=True)
+    else:
+      await ctx.respond(f"```{ps_txt}\n{j1_txt}\n{j2_txt}\n{j3_txt}```")
+
+
 
 @bot.slash_command(name="kill")
 async def _slash_kill(ctx):
@@ -1211,17 +1229,24 @@ async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #print(f"loop:{now}")
   if now == '00:00':
+    global song_db
+    global song_db_sl
+    global song_db_lg
+    global song_db_st
+    global song_db_dp
 
     res = requests.get(db_url)
     res_sl = requests.get(db_url_sl)
     res_lg = requests.get(db_url_lg)
     res_st = requests.get(db_url_st)
     res_dp = requests.get(db_url_dp)
+
     song_db = json.loads(res.text)
     song_db_sl = json.loads(res_sl.text)
     song_db_lg = json.loads(res_lg.text)
     song_db_st = json.loads(res_st.text)
     song_db_dp = json.loads(res_dp.text)
+
     print('songdb reloaded')
     
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
