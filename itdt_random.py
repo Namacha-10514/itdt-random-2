@@ -1066,7 +1066,7 @@ async def _slash_random_groupname(ctx):
   result_eng = word_i.json()[0] + " " + word_t1.json()[0] + " " + word_d.json()[0] + " " + word_t2.json()[0] + " "
   await ctx.respond(result_eng)
 
-@bot.slash_command(name="random_groupname_F4P", description="F4P Random")
+@bot.slash_command(name="random_groupname_f4p", description="F4P Random")
 async def _slash_random_groupname(ctx):
   word_f  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=f&type=capitalized')
   word_p  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=p&type=capitalized')
