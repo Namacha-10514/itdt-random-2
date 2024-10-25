@@ -850,9 +850,9 @@ async def _slash_frequency(ctx, freq: Option(float, "楽曲キー変更量", req
     j1_txt = "JudgeRangeGreat=" + str(int(60*ps))
     j2_txt = "JudgeRangeGood=" + str(int(120*ps))
     j3_txt = "JudgeRangeBad=" + str(int(240*ps))
-    if ps > 4:
+    if ps > 4 | ps < 0.25:
       embed_err = discord.Embed(title="エラー",
-                              description="Playspeedが4を超えました。",
+                              description="Playspeedが次郎の対応範囲を超えました。",
                               color=0xff8080)
       await ctx.respond(embed=embed_err, ephemeral=True)
     else:
@@ -1064,6 +1064,13 @@ async def _slash_random_groupname(ctx):
   word_d  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=d&type=capitalized')
   word_t2 = requests.get('https://random-word-api.vercel.app/api?words=1&letter=t&type=capitalized')
   result_eng = word_i.json()[0] + " " + word_t1.json()[0] + " " + word_d.json()[0] + " " + word_t2.json()[0] + " "
+  await ctx.respond(result_eng)
+
+@bot.slash_command(name="random_groupname_F4P", description="F4P Random")
+async def _slash_random_groupname(ctx):
+  word_f  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=f&type=capitalized')
+  word_p  = requests.get('https://random-word-api.vercel.app/api?words=1&letter=p&type=capitalized')
+  result_eng = word_f.json()[0] + " 4 " + word_p.json()[0]
   await ctx.respond(result_eng)
 
 @bot.slash_command(name="random_kanji",
