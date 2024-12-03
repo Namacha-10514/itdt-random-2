@@ -850,7 +850,7 @@ async def _slash_frequency(ctx, freq: Option(float, "楽曲キー変更量", req
     j1_txt = "JudgeRangeGreat=" + str(int(60*ps))
     j2_txt = "JudgeRangeGood=" + str(int(120*ps))
     j3_txt = "JudgeRangeBad=" + str(int(240*ps))
-    if ps > 4 | ps < 0.25:
+    if (ps > 4) or (ps < 0.25):
       embed_err = discord.Embed(title="エラー",
                               description="Playspeedが次郎の対応範囲を超えました。",
                               color=0xff8080)
