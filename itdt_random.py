@@ -948,10 +948,10 @@ async def _slash_random_number(ctx, min: Option(int, required=True),
   await ctx.respond(rnd)
 
 @bot.slash_command(name="random_number_multi", description="指定された範囲内の乱数を複数表示します。")
-async def _slash_random_number_multi(ctx, min:   Option(int, required=True),
-                                          max:   Option(int, required=True),
-                                          times: Option(int, required=True),
-                                          sort:  Option(bool)):
+async def _slash_random_number_multi(ctx, min:   Option(int,  required=True),
+                                          max:   Option(int,  required=True),
+                                          times: Option(int,  required=True),
+                                          sort:  Option(bool, default=False)):
   rnd = []
   for i in range(times):
     rnd.append(random.randint(min, max))
