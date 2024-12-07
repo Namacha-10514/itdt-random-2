@@ -956,7 +956,7 @@ async def _slash_random_number_multi(ctx, min:   Option(int,  required=True),
   for i in range(times):
     rnd.append(random.randint(min, max))
   if (sort == True):
-    rnd.sort
+    rnd.sort()
   await ctx.respond(rnd)
 
 # @bot.slash_command(name="bingo", description="ビンゴの条件を表示します。")
