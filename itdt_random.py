@@ -955,7 +955,7 @@ async def _slash_random_number_multi(ctx, min:   Option(int, required=True),
   rnd = []
   for i in range(times):
     rnd.append(random.randint(min, max))
-  if (sort == true):
+  if (sort == True):
     rnd.sort
   await ctx.respond(rnd)
 
