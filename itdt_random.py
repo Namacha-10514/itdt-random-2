@@ -774,6 +774,7 @@ async def _slash_search_title(ctx, word: Option(str,
                       value="★" + chlevel + " " + title + "\n" + url,
                       inline=False)
       count += 1
+      if (count >= 25): break
     await ctx.respond(embed=embed, ephemeral=ephemeral)
 
 @bot.slash_command(name="dp_search_title", description="DP譜面をタイトル・差分名で検索します。(2文字以上)")
@@ -811,6 +812,7 @@ async def _slash_dp_search_title(ctx, word: Option(str,
                       value="Φ" + chlevel + " " + title + "\n" + url,
                       inline=False)
       count += 1
+      if (count >= 25): break
     await ctx.respond(embed=embed, ephemeral=ephemeral)
 
 @bot.slash_command(name="score")
