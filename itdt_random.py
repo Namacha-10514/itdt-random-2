@@ -16,14 +16,19 @@ from zoneinfo import ZoneInfo
 intents = discord.Intents.default()
 intents.members = True
 
-db_url = "https://script.google.com/macros/s/AKfycbzNnzDMS2srhdu0oz7zt7rux7ZZCD3q5D3XKwesEhzjvJlhePu7qBMv_QjesdAynv40/exec"
+db_url    = "https://script.google.com/macros/s/AKfycbzNnzDMS2srhdu0oz7zt7rux7ZZCD3q5D3XKwesEhzjvJlhePu7qBMv_QjesdAynv40/exec"
 db_url_sl = "https://script.google.com/macros/s/AKfycbxpDx-9KkQhuFHDbmfR75XtUFHrN_eRWh5PoM_n4mLbNuBrddwfcrkxA7WNcPg2b8_MLA/exec"
 db_url_lg = "https://script.google.com/macros/s/AKfycbw5CkdE-CoDZxDH7SJjLz0Pf4HuRU25b5uUOmcoOaPtRfwWu8-MdksWDTZuWApprCTQ/exec"
 db_url_st = "https://script.google.com/macros/s/AKfycbw-KA9EsIdYidNePnDzWYbsvpbDwSti3jRvJb0uhU7CZDJBzb229rGFxM1zmMRxKOC6sg/exec"
-db_url_hd = "https://script.google.com/macros/s/AKfycbwxl8D7wKT341-3ZsQJ1XimVuHQRlYm9knjdqzR5YXdDpG4xjtVdOYGNst-yPMFN-za/exec"
+db_url_ds = "https://script.google.com/macros/s/AKfycbzmVpf5zK-_pBuEzG2akC3JjcSJzlGvlTWtmTiBRUQLRCu14Tt3uC-ceU6MsfvFOcbWpg/exec"
+
 db_url_tm = "https://script.google.com/macros/s/AKfycbyJTVJVjMsmIjA1W9LUEJBjx6myDFPZ0qspUtp57DRavT_0ZVzkewQyx2V4FSI1rAYJ/exec"
+
+db_url_hd = "https://script.google.com/macros/s/AKfycbwxl8D7wKT341-3ZsQJ1XimVuHQRlYm9knjdqzR5YXdDpG4xjtVdOYGNst-yPMFN-za/exec"
 db_url_ez = "https://script.google.com/macros/s/AKfycbxqsf6jTaRKbFtCIncHij2K0R-c9oysd2hJ-VtxJuqT_llTslKFtfeza0h5nQO1TBhz0Q/exec"
 db_url_sg = "https://script.google.com/macros/s/AKfycbxZSWT3rRWNagfY24wzG6x8DKORCe6hHeTd_q1BLzNemUTAUNywEhJ-wOGqEDQVvN8/exec"
+db_url_nds = "https://script.google.com/macros/s/AKfycby5ky6cdhVu_Gf-MJKa7TeAh54I0dMiV1kBPCmwGS98xiCVASBRBp1QwgCT49YxxJ8osQ/exec"
+
 db_url_dp = "https://script.google.com/macros/s/AKfycbx1495yVN50lyffmhaDx69jDma8H43HC-lQGf-aSRQK4ljMIAo9ywACP82xHtTMXVQ/exec"
 
 file_kj = open('kanji.json', 'r')
@@ -32,10 +37,14 @@ res = requests.get(db_url)
 res_sl = requests.get(db_url_sl)
 res_lg = requests.get(db_url_lg)
 res_st = requests.get(db_url_st)
-res_hd = requests.get(db_url_hd)
+res_ds = requests.get(db_url_ds)
 res_tm = requests.get(db_url_tm)
+
+res_hd = requests.get(db_url_hd)
 res_ez = requests.get(db_url_ez)
 res_sg = requests.get(db_url_sg)
+res_nds = requests.get(db_url_nds)
+
 res_dp = requests.get(db_url_dp)
 
 res_kj = file_kj.read()
@@ -44,10 +53,12 @@ song_db = json.loads(res.text)
 song_db_sl = json.loads(res_sl.text)
 song_db_lg = json.loads(res_lg.text)
 song_db_st = json.loads(res_st.text)
+song_db_ds = json.loads(res_ds.text)
 song_db_hd = json.loads(res_hd.text)
 song_db_tm = json.loads(res_tm.text)
 song_db_ez = json.loads(res_ez.text)
 song_db_sg = json.loads(res_sg.text)
+song_db_nds = json.loads(res_nds.text)
 song_db_dp = json.loads(res_dp.text)
 
 kanji_db = json.loads(res_kj)
@@ -467,9 +478,7 @@ async def _slash_random_dan(ctx, dan: Option(
     embed.add_field(name="URL", value=urls[3], inline=True)
     await ctx.respond(embed=embed)
 
-
 #ここから下は特殊難易度表ランダム
-
 
 @bot.slash_command(name="sl_random", description="低速難易度表から1曲ランダムに表示します。")
 async def _slash_sl_random(ctx, level: Option(str,
@@ -577,6 +586,37 @@ async def _slash_st_random(ctx, level: Option(str,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
+@bot.slash_command(name="ds_random", description="Lodestar難易度表から1曲ランダムに表示します。")
+async def _slash_ds_random(ctx, level: Option(str,
+                                              "難易度を指定します(空欄で全曲)",
+                                              required=False)):
+  error = False
+  fnlevel = None
+  if level:
+    print('not empty')
+    if level not in ["0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11","12"]:
+      print('not defined')
+      embed_err = discord.Embed(title="エラー",
+                                description="指定された難易度は存在しません。",
+                                color=0xff8080)
+      await ctx.respond(embed=embed_err, ephemeral=True)
+      error = True
+    else:
+      while fnlevel != level:
+        #print('searching')
+        rnd = random.randrange(len(song_db_ds))
+        fnlevel = song_db_ds[rnd]['level']
+  else:
+    rnd = random.randrange(len(song_db_ds))
+  if error != True:
+    title = song_db_ds[rnd]['title'].replace('_', '\_')
+    chlevel = song_db_ds[rnd]['level']
+    url = song_db_ds[rnd]['url']
+    embed = discord.Embed(title="ランダム選曲(Lodestar難易度表)", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value="ds" + chlevel, inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
 
 @bot.slash_command(name="dp_random", description="DP難易度表から1曲ランダムに表示します。")
 async def _slash_dp_random(ctx, level: Option(str,
@@ -926,6 +966,18 @@ async def _slash_sega_random(ctx, ):
   embed.add_field(name="曲名", value=title, inline=False)
   embed.add_field(name="難易度", value="★" + chlevel, inline=False)
   embed.add_field(name="URL", value=url, inline=False)
+  await ctx.respond(embed=embed)
+
+@bot.slash_command(name="random_nds", description="ニンテンドーDSで発売されたゲームソフトから1本ランダムに表示します。")
+async def _slash_random_nds(ctx):
+  rnd = random.randrange(len(song_db_nds))
+  title = song_db_nds[rnd]['title'].replace('_', '\_')
+  date = song_db_nds[rnd]['date']
+  maker = song_db_nds[rnd]['maker']
+  embed = discord.Embed(title="ランダム選出", color=0xff8080)
+  embed.add_field(name="タイトル", value=title, inline=False)
+  embed.add_field(name="発売日", value=date, inline=False)
+  embed.add_field(name="メーカー", value=maker, inline=False)
   await ctx.respond(embed=embed)
 
 @bot.command(
