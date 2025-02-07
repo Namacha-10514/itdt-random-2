@@ -968,8 +968,8 @@ async def _slash_sega_random(ctx, ):
   embed.add_field(name="URL", value=url, inline=False)
   await ctx.respond(embed=embed)
 
-@bot.slash_command(name="random_nds", description="ニンテンドーDSで発売されたゲームソフトから1本ランダムに表示します。")
-async def _slash_random_nds(ctx):
+@bot.slash_command(name="nds_random", description="ニンテンドーDSで発売されたゲームソフトから1本ランダムに表示します。")
+async def _slash_nds_random(ctx):
   rnd = random.randrange(len(song_db_nds))
   title = song_db_nds[rnd]['title'].replace('_', '\_')
   date = song_db_nds[rnd]['date']
