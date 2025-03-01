@@ -6,7 +6,7 @@ import requests
 import time
 import os
 
-from keep_alive import keep_alive
+from keep_alive import server_thread
 
 from datetime import datetime
 from discord import Option
@@ -1348,5 +1348,5 @@ async def ad_send(ctx):
                   inline=False)
   await ctx.respond(embed=embed)
 
-keep_alive()
+server_thread()
 bot.run(TOKEN)

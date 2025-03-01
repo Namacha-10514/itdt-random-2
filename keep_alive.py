@@ -1,15 +1,17 @@
-from flask import Flask
 from threading import Thread
 
-app = Flask('')
+from fastapi import FastAPI
+import uvicorn
 
-@app.route('/')
-def home():
-    return "I'm alive"
+app = FastAPI()
 
-def run():
-    app.run(host='0.0.0.0', port=8080)
+@app.get("/")
+async def root():
+	return {"message": "Server is Online."}
 
-def keep_alive():
-    t = Thread(target=run)
-    t.start()
+def start():
+	uvicorn.run(app, host="0.0.0.0", port=8080)
+
+def server_thread():
+	t = Thread(target=start)
+	t.start()
