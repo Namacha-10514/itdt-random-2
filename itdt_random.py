@@ -44,6 +44,7 @@ res_hd = requests.get(db_url_hd)
 res_ez = requests.get(db_url_ez)
 res_sg = requests.get(db_url_sg)
 res_nds = requests.get(db_url_nds)
+res_psp = requests.get(db_url_psp)
 
 res_dp = requests.get(db_url_dp)
 
@@ -59,6 +60,7 @@ song_db_tm = json.loads(res_tm.text)
 song_db_ez = json.loads(res_ez.text)
 song_db_sg = json.loads(res_sg.text)
 song_db_nds = json.loads(res_nds.text)
+song_db_psp = json.loads(res_psp.text)
 song_db_dp = json.loads(res_dp.text)
 
 kanji_db = json.loads(res_kj)
@@ -999,13 +1001,13 @@ async def _slash_psp_random(ctx, level: Option(str,
       while fnlevel != level:
         #print('searching')
         rnd = random.randrange(len(song_db))
-        fnlevel = song_db[rnd]['level']
+        fnlevel = song_db_psp[rnd]['level']
   else:
     rnd = random.randrange(len(song_db))
   if error != True:
-    title = song_db[rnd]['title'].replace('_', '\_')
-    chlevel = song_db[rnd]['level']
-    url = song_db[rnd]['url']
+    title = song_db_psp[rnd]['title'].replace('_', '\_')
+    chlevel = song_db_psp[rnd]['level']
+    url = song_db_psp[rnd]['url']
     embed = discord.Embed(title="ランダム選曲", color=0xff8080)
     embed.add_field(name="曲名", value=title, inline=False)
     embed.add_field(name="難易度", value="psp" + chlevel, inline=False)
