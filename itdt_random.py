@@ -28,7 +28,7 @@ db_url_hd = "https://script.google.com/macros/s/AKfycbwxl8D7wKT341-3ZsQJ1XimVuHQ
 db_url_ez = "https://script.google.com/macros/s/AKfycbxqsf6jTaRKbFtCIncHij2K0R-c9oysd2hJ-VtxJuqT_llTslKFtfeza0h5nQO1TBhz0Q/exec"
 db_url_sg = "https://script.google.com/macros/s/AKfycbxZSWT3rRWNagfY24wzG6x8DKORCe6hHeTd_q1BLzNemUTAUNywEhJ-wOGqEDQVvN8/exec"
 db_url_nds = "https://script.google.com/macros/s/AKfycby5ky6cdhVu_Gf-MJKa7TeAh54I0dMiV1kBPCmwGS98xiCVASBRBp1QwgCT49YxxJ8osQ/exec"
-
+db_url_psp = "https://script.google.com/macros/s/AKfycbxPDXopemBFbDnsjljAtjse5IzbPDF72M6guAPaFEgpfW5IKdXgGDQ1VrAK7nLCBIQRQw/exec"
 db_url_dp = "https://script.google.com/macros/s/AKfycbx1495yVN50lyffmhaDx69jDma8H43HC-lQGf-aSRQK4ljMIAo9ywACP82xHtTMXVQ/exec"
 
 file_kj = open('kanji.json', 'r')
@@ -979,6 +979,38 @@ async def _slash_nds_random(ctx):
   embed.add_field(name="発売日", value=date, inline=False)
   embed.add_field(name="メーカー", value=maker, inline=False)
   await ctx.respond(embed=embed)
+
+@bot.slash_command(name="psp_random", description="PowerSuperPower難易度表から1曲ランダムに表示します。")
+async def _slash_psp_random(ctx, level: Option(str,
+                                           "難易度を指定します(空欄で全曲)",
+                                           required=False)):
+  error = False
+  fnlevel = None
+  if level:
+    print('not empty')
+    if level not in all_levels:
+      print('not defined')
+      embed_err = discord.Embed(title="エラー",
+                                description="指定された難易度は存在しません。",
+                                color=0xff8080)
+      await ctx.respond(embed=embed_err, ephemeral=True)
+      error = True
+    else:
+      while fnlevel != level:
+        #print('searching')
+        rnd = random.randrange(len(song_db))
+        fnlevel = song_db[rnd]['level']
+  else:
+    rnd = random.randrange(len(song_db))
+  if error != True:
+    title = song_db[rnd]['title'].replace('_', '\_')
+    chlevel = song_db[rnd]['level']
+    url = song_db[rnd]['url']
+    embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value="psp" + chlevel, inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
 
 @bot.command(
   name="random_keyconf",
