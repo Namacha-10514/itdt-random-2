@@ -1000,10 +1000,10 @@ async def _slash_psp_random(ctx, level: Option(str,
     else:
       while fnlevel != level:
         #print('searching')
-        rnd = random.randrange(len(song_db))
+        rnd = random.randrange(len(song_db_psp))
         fnlevel = song_db_psp[rnd]['level']
   else:
-    rnd = random.randrange(len(song_db))
+    rnd = random.randrange(len(song_db_psp))
   if error != True:
     title = song_db_psp[rnd]['title'].replace('_', '\_')
     chlevel = song_db_psp[rnd]['level']
