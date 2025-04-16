@@ -253,6 +253,36 @@ async def _slash_random_illegular(ctx, ):
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
+@bot.slash_command(name="random_weighted", description="難易度表から1曲ランダムに表示します。一定の重み付けがなされています。")
+async def _slash_random_weighted(ctx):
+  error = False
+  fnlevel = None
+  level = random.choice([0,0,0,0,0,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,12,12,12,13,13,13,14,14,14,15,15,15,16,17,18,19,20,21,22,23,24,25,99,99,99,99,99,"∞","∞","∞","∞","∞","???","???","???","???","???","(^^)","(^^)","(^^)","(^^)","(^^)"])
+  if level:
+    print('not empty')
+    if level not in all_levels:
+      print('not defined')
+      embed_err = discord.Embed(title="エラー",
+                                description="指定された難易度は存在しません。",
+                                color=0xff8080)
+      await ctx.respond(embed=embed_err, ephemeral=True)
+      error = True
+    else:
+      while fnlevel != level:
+        #print('searching')
+        rnd = random.randrange(len(song_db))
+        fnlevel = song_db[rnd]['level']
+  else:
+    rnd = random.randrange(len(song_db))
+  if error != True:
+    title = song_db[rnd]['title'].replace('_', '\_')
+    chlevel = song_db[rnd]['level']
+    url = song_db[rnd]['url']
+    embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value="★" + chlevel, inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
 
 @bot.slash_command(name="random_with_option",
                    description="難易度表から1曲とプレイオプションをランダムに表示します。")
