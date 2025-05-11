@@ -180,8 +180,9 @@ async def _slash_random_multi(ctx, times: Option(int,
     rnd = random.randrange(len(song_db))
     title = song_db[rnd]['title'].replace('_', '\_')
     chlevel = song_db[rnd]['level']
+    url = song_db[rnd]['url']
     embed.add_field(name="[" + str(i + 1) + "]",
-                    value="★" + chlevel + " " + title,
+                    value="[★" + chlevel + " " + title + "](" + url + ")",
                     inline=False)
   await ctx.respond(embed=embed)
 
