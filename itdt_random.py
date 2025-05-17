@@ -1241,8 +1241,8 @@ async def _slash_ai_chan(ctx, level: Option(str,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
-@bot.slash_command(name="s_random", description="難易度表から1曲ランダムに表示します。レベルもランダムに決定されます。")
-async def _slash_s_random(ctx, level: Option(str,
+@bot.slash_command(name="super_random", description="難易度表から1曲ランダムに表示します。レベルもランダムに決定されます。")
+async def _slash_super_random(ctx, level: Option(str,
                                            "難易度を指定します(空欄で全曲)",
                                            required=False)):
   error = False
@@ -1272,9 +1272,9 @@ async def _slash_s_random(ctx, level: Option(str,
     embed.add_field(name="URL", value=url, inline=False)
     await ctx.respond(embed=embed)
 
-@bot.slash_command(name="s_random_range_multi",
+@bot.slash_command(name="super_random_range_multi",
                    description="範囲内の難易度から複数曲ランダムに表示します。レベルもランダムに決定されます。")
-async def _slash_s_random_range_multi(ctx, times: Option(int,
+async def _slash_super_random_range_multi(ctx, times: Option(int,
                                                        "抽選曲数を指定します(最大25曲)",
                                                        required=True),
                                     min: Option(int,
