@@ -843,10 +843,10 @@ async def _slash_search_title(ctx, word: Option(str,
     for i in found_num:
       title = song_db[i]['title'].replace('_', '\_')
       chlevel = song_db[i]['level']
-      url = song_db[i]['url']
-      embed.add_field(name=str(count) + ".",
-                      value="★" + chlevel + " " + title + "\n" + url,
-                      inline=False)
+      url = song_db[i]['url'] 
+      embed.add_field(name="[" + str(i + 1) + "]",
+                    value="[★" + chlevel + " " + title + "](" + url + ")",
+                    inline=False) 
       count += 1
       if (count >= 25): break
     await ctx.respond(embed=embed, ephemeral=ephemeral)
@@ -882,9 +882,9 @@ async def _slash_dp_search_title(ctx, word: Option(str,
       title = song_db_dp[i]['title'].replace('_', '\_')
       chlevel = song_db_dp[i]['level']
       url = song_db_dp[i]['url']
-      embed.add_field(name=str(count) + ".",
-                      value="Φ" + chlevel + " " + title + "\n" + url,
-                      inline=False)
+      embed.add_field(name="[" + str(i + 1) + "]",
+                    value="[Φ" + chlevel + " " + title + "](" + url + ")",
+                    inline=False) 
       count += 1
       if (count >= 25): break
     await ctx.respond(embed=embed, ephemeral=ephemeral)
