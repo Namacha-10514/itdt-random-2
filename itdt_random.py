@@ -837,14 +837,14 @@ async def _slash_search_title(ctx, word: Option(str,
     embed = discord.Embed(title="検索結果", color=0xff8080)
     count = 1
     if not found_num:
-      embed.add_field(name="0.",
+      embed.add_field(name="[0]",
                       value="指定された語句を含む譜面が見つかりませんでした。",
                       inline=False)
     for i in found_num:
       title = song_db[i]['title'].replace('_', '\_')
       chlevel = song_db[i]['level']
       url = song_db[i]['url'] 
-      embed.add_field(name="[" + str(i + 1) + "]",
+      embed.add_field(name="[" + str(count) + "]",
                     value="[★" + chlevel + " " + title + "](" + url + ")",
                     inline=False) 
       count += 1
@@ -875,14 +875,14 @@ async def _slash_dp_search_title(ctx, word: Option(str,
     embed = discord.Embed(title="検索結果", color=0xff8080)
     count = 1
     if not found_num:
-      embed.add_field(name="0.",
+      embed.add_field(name="[0]",
                       value="指定された語句を含む譜面が見つかりませんでした。",
                       inline=False)
     for i in found_num:
       title = song_db_dp[i]['title'].replace('_', '\_')
       chlevel = song_db_dp[i]['level']
       url = song_db_dp[i]['url']
-      embed.add_field(name="[" + str(i + 1) + "]",
+      embed.add_field(name="[" + str(count) + "]",
                     value="[Φ" + chlevel + " " + title + "](" + url + ")",
                     inline=False) 
       count += 1
