@@ -178,7 +178,7 @@ async def _slash_random_multi(ctx, times: Option(int,
   embed = discord.Embed(title="ランダム選曲", color=0xff8080)
   for i in range(times):
     rnd = random.randrange(len(song_db))
-    title = song_db[rnd]['title'].replace('_', '\_')
+    title = song_db[rnd]['title']
     chlevel = song_db[rnd]['level']
     url = song_db[rnd]['url']
     embed.add_field(name="[" + str(i + 1) + "]",
@@ -226,7 +226,7 @@ async def _slash_random_range_multi(ctx, times: Option(int,
           fnlevel = 104
         else:
           fnlevel = int(song_db[rnd]['level'])
-      title = song_db[rnd]['title'].replace('_', '\_')
+      title = song_db[rnd]['title']
       chlevel = song_db[rnd]['level']
       url = song_db[rnd]['url']
       embed.add_field(name="[" + str(i + 1) + "]",
@@ -841,7 +841,7 @@ async def _slash_search_title(ctx, word: Option(str,
                       value="指定された語句を含む譜面が見つかりませんでした。",
                       inline=False)
     for i in found_num:
-      title = song_db[i]['title'].replace('_', '\_')
+      title = song_db[i]['title']
       chlevel = song_db[i]['level']
       url = song_db[i]['url'] 
       embed.add_field(name="[" + str(count) + "]",
@@ -879,7 +879,7 @@ async def _slash_dp_search_title(ctx, word: Option(str,
                       value="指定された語句を含む譜面が見つかりませんでした。",
                       inline=False)
     for i in found_num:
-      title = song_db_dp[i]['title'].replace('_', '\_')
+      title = song_db_dp[i]['title']
       chlevel = song_db_dp[i]['level']
       url = song_db_dp[i]['url']
       embed.add_field(name="[" + str(count) + "]",
