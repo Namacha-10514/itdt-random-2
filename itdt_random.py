@@ -29,6 +29,8 @@ db_url_ez = "https://script.google.com/macros/s/AKfycbxqsf6jTaRKbFtCIncHij2K0R-c
 db_url_sg = "https://script.google.com/macros/s/AKfycbxZSWT3rRWNagfY24wzG6x8DKORCe6hHeTd_q1BLzNemUTAUNywEhJ-wOGqEDQVvN8/exec"
 db_url_nds = "https://script.google.com/macros/s/AKfycby5ky6cdhVu_Gf-MJKa7TeAh54I0dMiV1kBPCmwGS98xiCVASBRBp1QwgCT49YxxJ8osQ/exec"
 db_url_psp = "https://script.google.com/macros/s/AKfycbxPDXopemBFbDnsjljAtjse5IzbPDF72M6guAPaFEgpfW5IKdXgGDQ1VrAK7nLCBIQRQw/exec"
+db_url_pk = "https://script.google.com/macros/s/AKfycbxDJWN5R1OagCq-8Mh6uXLLNFrlJyJMFIOx8kn3qjmEEQe3zCEVq2Hn6VZmM_1AFovenQ/exec"
+
 db_url_dp = "https://script.google.com/macros/s/AKfycbx1495yVN50lyffmhaDx69jDma8H43HC-lQGf-aSRQK4ljMIAo9ywACP82xHtTMXVQ/exec"
 
 file_kj = open('kanji.json', 'r')
@@ -45,6 +47,7 @@ res_ez = requests.get(db_url_ez)
 res_sg = requests.get(db_url_sg)
 res_nds = requests.get(db_url_nds)
 res_psp = requests.get(db_url_psp)
+res_pk = requests.get(db_url_pk)
 
 res_dp = requests.get(db_url_dp)
 
@@ -61,6 +64,8 @@ song_db_ez = json.loads(res_ez.text)
 song_db_sg = json.loads(res_sg.text)
 song_db_nds = json.loads(res_nds.text)
 song_db_psp = json.loads(res_psp.text)
+song_db_pk = json.loads(res_psp.text)
+
 song_db_dp = json.loads(res_dp.text)
 
 kanji_db = json.loads(res_kj)
@@ -959,10 +964,51 @@ async def _slash_dp_leveljudge(ctx, chart: Option(str, required=True)):
   await ctx.respond(f"{chart}はΦ{level}です。")
 
 @bot.slash_command(name="bpmjudge")
-async def _slash_bpmudge(ctx, chart: Option(str, required=True)):
+async def _slash_bpmjudge(ctx, chart: Option(str, required=True)):
   level = random.randrange(1, 999)
   await ctx.respond(f"{chart}は{level}BPMです。")
 
+@bot.slash_command(name="qlzp_random", description="？？？？から1曲ランダムに表示します。 利用にはキーコードが必要です")
+async def _slash_qlzp_random(ctx, keycode: Option(str,
+                                           "KeyCode11",
+                                           required=True)):
+  error = False
+  fnlevel = None
+  #if level:
+  #  print('not empty')
+  #  if level not in all_levels:
+  #    print('not defined')
+  #    embed_err = discord.Embed(title="エラー",
+  #                              description="指定された難易度は存在しません。",
+  #                              color=0xff8080)
+  #    await ctx.respond(embed=embed_err, ephemeral=True)
+  #    error = True
+  #  else:
+  #    while fnlevel != level:
+  #      #print('searching')
+  #      rnd = random.randrange(len(song_db))
+  #      fnlevel = song_db[rnd]['level']
+  #else:
+  #  rnd = random.randrange(len(song_db))
+
+  if keycode != "Sea5671":
+      embed_err = discord.Embed(title="エラー",
+                                description="キーコードが正しくありません",
+                                color=0xff8080)
+      await ctx.respond(embed=embed_err, ephemeral=True)
+      error = True
+  else:
+    rnd = random.randrange(len(song_db_pk))
+  if error != True:
+    title = song_db_pk[rnd]['title'].replace('_', '\_')
+    chlevel = song_db_pk[rnd]['level']
+    url = song_db_pk[rnd]['url']
+    embed = discord.Embed(title="ランダム選曲", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value="★" + chlevel, inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await ctx.respond(embed=embed)
+    
 
 @bot.slash_command(name="hard_random", description="難しい楽曲を1曲ランダムに表示します。")
 async def _slash_hard_random(ctx, ):
