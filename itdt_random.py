@@ -1426,24 +1426,28 @@ async def loop():
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
     channel = bot.get_channel(987348863641878528)
 
-    if (db_shuffle < len(song_db)):
-      rnd = db_shuffle
-      title = song_db[rnd]['title']
-      chlevel = song_db[rnd]['level']
-      url = song_db[rnd]['url']
-      embed = discord.Embed(title="今日の譜面", color=0xff8080)
-      embed.add_field(name="曲名", value=title, inline=False)
-      embed.add_field(name="難易度", value="★" + chlevel, inline=False)
-      embed.add_field(name="URL", value=url, inline=False)
-    else:
-      rnd = db_shuffle - len(song_db)
-      title = song_db_dp[rnd]['title']
-      chlevel = song_db_dp[rnd]['level']
-      url = song_db_dp[rnd]['url']
-      embed = discord.Embed(title="今日の譜面", color=0xff8080)
-      embed.add_field(name="曲名", value=title, inline=False)
-      embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
-      embed.add_field(name="URL", value=url, inline=False)
+    # if (db_shuffle < len(song_db)):
+    #   rnd = db_shuffle
+    #   title = song_db[rnd]['title']
+    #   chlevel = song_db[rnd]['level']
+    #   url = song_db[rnd]['url']
+    #   embed = discord.Embed(title="今日の譜面", color=0xff8080)
+    #   embed.add_field(name="曲名", value=title, inline=False)
+    #   embed.add_field(name="難易度", value="★" + chlevel, inline=False)
+    #   embed.add_field(name="URL", value=url, inline=False)
+    # else:
+    #   rnd = db_shuffle - len(song_db)
+    #   title = song_db_dp[rnd]['title']
+    #   chlevel = song_db_dp[rnd]['level']
+    #   url = song_db_dp[rnd]['url']
+    #   embed = discord.Embed(title="今日の譜面", color=0xff8080)
+    #   embed.add_field(name="曲名", value=title, inline=False)
+    #   embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
+    #   embed.add_field(name="URL", value=url, inline=False)
+    embed = discord.Embed(title="今日の譜面", color=0xff8080)
+    embed.add_field(name="曲名", value="発迢よｬ｡驛朱屮易度陦ｨ 隴憺擇パッ繧ｯ v0L.1", inline=False)
+    embed.add_field(name="難易度", value="★", inline=False)
+    embed.add_field(name="URL", value="https://drive.google.com/file/d/1Lc4aro1YwckgAYGvrc4nPxMPTk5I8nvc/view?usp=sharing", inline=False)
     await channel.send(embed=embed)
 
 
