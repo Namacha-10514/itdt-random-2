@@ -1394,7 +1394,7 @@ async def on_ready():
   loop.start()
   #activity = discord.Activity(name='14 Minesweeper Variants',
   #                            type=discord.ActivityType.playing)
-  activity = discord.Activity(name='Broken Vol.1',
+  activity = discord.Activity(name='ITDTの譜面',
                               type=discord.ActivityType.playing)
   await bot.change_presence(activity=activity)
 
