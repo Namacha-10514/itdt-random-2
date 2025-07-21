@@ -968,8 +968,8 @@ async def _slash_bpmjudge(ctx, chart: Option(str, required=True)):
   level = random.randrange(1, 999)
   await ctx.respond(f"{chart}は{level}BPMです。")
 
-@bot.slash_command(name="qlzp_random", description="？？？？から1曲ランダムに表示します。 利用にはキーコードが必要です")
-async def _slash_qlzp_random(ctx, keycode: Option(str,
+@bot.slash_command(name="brv1_random", description="？？？？から1曲ランダムに表示します。 利用にはキーコードが必要です")
+async def _slash_brv1_random(ctx, keycode: Option(str,
                                            "KeyCode11",
                                            required=True)):
   error = False
@@ -1445,6 +1445,7 @@ async def loop():
        embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
        embed.add_field(name="URL", value=url, inline=False)
 
+    await channel.send(embed=embed)
 
 async def ad_send(ctx):
   embed = discord.Embed(title="【広告】", color=0xff8080)
