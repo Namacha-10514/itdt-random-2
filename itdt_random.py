@@ -1408,18 +1408,21 @@ async def loop():
     global song_db_lg
     global song_db_st
     global song_db_dp
-
+    global song_db_pk
+    
     res = requests.get(db_url)
     res_sl = requests.get(db_url_sl)
     res_lg = requests.get(db_url_lg)
     res_st = requests.get(db_url_st)
     res_dp = requests.get(db_url_dp)
+    res_pk = requests.get(db_url_pk)
 
     song_db = json.loads(res.text)
     song_db_sl = json.loads(res_sl.text)
     song_db_lg = json.loads(res_lg.text)
     song_db_st = json.loads(res_st.text)
     song_db_dp = json.loads(res_dp.text)
+    song_db_pk = json.loads(res_pk.text)
 
     print('songdb reloaded')
     
