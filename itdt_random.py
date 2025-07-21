@@ -64,7 +64,7 @@ song_db_ez = json.loads(res_ez.text)
 song_db_sg = json.loads(res_sg.text)
 song_db_nds = json.loads(res_nds.text)
 song_db_psp = json.loads(res_psp.text)
-song_db_pk = json.loads(res_psp.text)
+song_db_pk = json.loads(res_pk.text)
 
 song_db_dp = json.loads(res_dp.text)
 
