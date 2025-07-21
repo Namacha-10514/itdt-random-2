@@ -971,26 +971,12 @@ async def _slash_bpmjudge(ctx, chart: Option(str, required=True)):
 @bot.slash_command(name="brv1_random", description="？？？？から1曲ランダムに表示します。 利用にはキーコードが必要です")
 async def _slash_brv1_random(ctx, keycode: Option(str,
                                            "KeyCode11",
-                                           required=True)):
+                                           required=True),
+                                  level: Option(str,
+                                        "難易度を指定します(空欄で全曲)",
+                                        required=False)):
   error = False
   fnlevel = None
-  #if level:
-  #  print('not empty')
-  #  if level not in all_levels:
-  #    print('not defined')
-  #    embed_err = discord.Embed(title="エラー",
-  #                              description="指定された難易度は存在しません。",
-  #                              color=0xff8080)
-  #    await ctx.respond(embed=embed_err, ephemeral=True)
-  #    error = True
-  #  else:
-  #    while fnlevel != level:
-  #      #print('searching')
-  #      rnd = random.randrange(len(song_db))
-  #      fnlevel = song_db[rnd]['level']
-  #else:
-  #  rnd = random.randrange(len(song_db))
-
   if keycode != "Sea5671":
       embed_err = discord.Embed(title="エラー",
                                 description="キーコードが正しくありません",
@@ -998,7 +984,22 @@ async def _slash_brv1_random(ctx, keycode: Option(str,
       await ctx.respond(embed=embed_err, ephemeral=True)
       error = True
   else:
-    rnd = random.randrange(len(song_db_pk))
+    if level:
+      print('not empty')
+      if level not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13","???"]:
+        print('not defined')
+        embed_err = discord.Embed(title="エラー",
+                                description="指定された難易度は存在しません。",
+                                color=0xff8080)
+        await ctx.respond(embed=embed_err, ephemeral=True)
+        error = True
+      else:
+        while fnlevel != level:
+          #print('searching')
+          rnd = random.randrange(len(song_db_pk))
+          fnlevel = song_db_pk[rnd]['level']
+    else:
+      rnd = random.randrange(len(song_db_pk))
   if error != True:
     title = song_db_pk[rnd]['title'].replace('_', '\_')
     chlevel = song_db_pk[rnd]['level']
