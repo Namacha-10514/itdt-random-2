@@ -1,17 +1,19 @@
-from threading import Thread
+import threading
+from flask import Flask
 
-from fastapi import FastAPI
-import uvicorn
+class HealthCheckServer:
+    def __init__(self, host="0.0.0.0", port=8080):
+        self.host = host
+        self.port = port
+        self.thread = None
 
-app = FastAPI()
+    def start(self):
+        def run():
 
-@app.get("/")
-async def root():
-	return {"message": "Server is Online."}
-
-def start():
-	uvicorn.run(app, host="0.0.0.0", port=8080)
-
-def server_thread():
-	t = Thread(target=start)
-	t.start()
+            app = Flask(__name__)
+            @app.route("/")
+            def health():
+                return "OK", 200
+            app.run(host=self.host, port=self.port)
+        self.thread = threading.Thread(target=run, daemon=True)
+        self.thread.start()

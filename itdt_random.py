@@ -6,7 +6,7 @@ import requests
 import time
 import os
 
-from keep_alive import server_thread
+from keep_alive import HealthCheckServer
 
 from datetime import datetime
 from discord import Option
@@ -1464,5 +1464,7 @@ async def ad_send(ctx):
                   inline=False)
   await ctx.respond(embed=embed)
 
-server_thread()
+server = HealthCheckServer()
+server.start()
+
 bot.run(TOKEN)
