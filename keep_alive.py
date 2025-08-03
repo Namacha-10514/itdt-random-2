@@ -2,7 +2,7 @@ import threading
 from flask import Flask
 
 class HealthCheckServer:
-    def __init__(self, host="0.0.0.0", port=8080):
+    def __init__(self, host="0.0.0.0", port=8000):
         self.host = host
         self.port = port
         self.thread = None
