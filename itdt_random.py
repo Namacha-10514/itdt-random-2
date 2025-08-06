@@ -968,6 +968,14 @@ async def _slash_bpmjudge(ctx, chart: Option(str, required=True)):
   level = random.randrange(1, 999)
   await ctx.respond(f"{chart}は{level}BPMです。")
 
+@bot.slash_command(name="factcheck")
+async def _slash_factcheck(ctx, chart: Option(str, required=True)):
+  truefalse = random.randint(1,2)
+  if truefalse == 1:
+    await ctx.respond(f"{chart}は真です。")
+  else:
+    await ctx.respond(f"{chart}は偽です。")
+
 @bot.slash_command(name="brv1_random", description="？？？？から1曲ランダムに表示します。 利用にはキーコードが必要です")
 async def _slash_brv1_random(ctx, keycode: Option(str,
                                            "KeyCode11",
