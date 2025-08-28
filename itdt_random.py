@@ -1447,6 +1447,42 @@ async def loop():
        embed.add_field(name="URL", value=url, inline=False)
 
     await channel.send(embed=embed)
+  if now == '16:00':
+        guild = bot.get_guild(815560489312190504)
+        if not guild:
+            print("ギルドが見つかりません")
+            return
+
+        # 一番人数が多いVCを探す
+        target_channel = None
+        max_members = 0
+        for channel in guild.voice_channels:
+            if len(channel.members) > max_members:
+                max_members = len(channel.members)
+                target_channel = channel
+
+        if target_channel and max_members > 0:
+            if not guild.voice_client:
+                voice_client = await target_channel.connect()
+                print(f"{target_channel} に参加しました！（人数: {max_members}）")
+
+                # 音声再生
+                try:
+                    source = discord.FFmpegPCMAudio("oyatu.mp3")
+                    voice_client.play(source)
+
+                    # 再生終了まで待つ
+                    while voice_client.is_playing():
+                        await discord.utils.sleep_until(datetime.datetime.now() + datetime.timedelta(seconds=1))
+
+                except Exception as e:
+                    print(f"音声再生エラー: {e}")
+
+                # 再生終了後に退出
+                await voice_client.disconnect()
+                print("音声再生後に退出しました。")
+        else:
+            print("15:00時点でどのVCにも誰もいませんでした。")
 
 async def ad_send(ctx):
   embed = discord.Embed(title="【広告】", color=0xff8080)
