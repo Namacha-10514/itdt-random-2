@@ -952,6 +952,16 @@ async def _slash_gamerule(
 ):
   await ctx.respond(f"ゲームルール {gamerule} が {value} に設定されました")
 
+@bot.slash_command(name="join")
+async def _slash_join(ctx):
+      if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        await channel.connect()
+
+@bot.slash_command(name="leave")
+async def _slash_leave(ctx):
+    if ctx.voice_client:
+        await ctx.voice_client.disconnect()
 
 @bot.slash_command(name="leveljudge")
 async def _slash_leveljudge(ctx, chart: Option(str, required=True)):
@@ -1374,27 +1384,6 @@ async def _slash_super_random_range_multi(ctx, times: Option(int,
                       value="★" + chlevel + " " + title,
                       inline=False)
     await ctx.respond(embed=embed)
-
-# @bot.slash_command(
-#     name="transform",
-#     description="ITDT Gandomにトランスフォームします。"
-#     )
-# async def _slash_transform(
-#     ctx
-#     ):
-#     await bot.user.edit(username="ITDT Gandom")
-#     await ctx.respond('トランスフォーム！！')
-
-# @bot.slash_command(
-#     name="transform_back",
-#     description="ITDT Randomに戻ります。"
-#     )
-# async def _slash_transform_back(
-#     ctx
-#     ):
-#     await bot.user.edit(username="ITDT Random")
-#     await ctx.respond('トランスフォーム解除！！')
-
 
 @bot.event
 async def on_ready():
