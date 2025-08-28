@@ -1447,7 +1447,7 @@ async def loop():
        embed.add_field(name="URL", value=url, inline=False)
 
     await channel.send(embed=embed)
-  if now == '16:30':
+  if now == '16:35':
         guild = bot.get_guild(815560489312190504)
         channel = bot.get_channel(1072859349946482768)
         if not guild:
