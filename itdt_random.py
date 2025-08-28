@@ -9,6 +9,7 @@ import os
 from keep_alive import HealthCheckServer
 
 from datetime import datetime
+from datetime import timedelta
 from discord import Option
 from discord.ext import tasks
 from zoneinfo import ZoneInfo
@@ -1447,7 +1448,7 @@ async def loop():
        embed.add_field(name="URL", value=url, inline=False)
 
     await channel.send(embed=embed)
-  if now == '16:35':
+  if now == '15:00':
         guild = bot.get_guild(815560489312190504)
         channel = bot.get_channel(1072859349946482768)
         if not guild:
@@ -1470,14 +1471,15 @@ async def loop():
                 # 音声再生
                 try:
                     source = discord.FFmpegPCMAudio("oyatu.mp3")
+                    source = discord.PCMVolumeTransformer(source, volume=0.5)
                     voice_client.play(source)
 
                     # 再生終了まで待つ
                     while voice_client.is_playing():
-                        await discord.utils.sleep_until(datetime.datetime.now() + datetime.timedelta(seconds=1))
+                        await discord.utils.sleep_until(datetime.now() + timedelta(seconds=1))
 
                 except Exception as e:
-                    await channel.send(f"音声再生エラー: {e}")
+                    print(f"音声再生エラー: {e}")
         else:
             print("15:00時点でどのVCにも誰もいませんでした。")
 
