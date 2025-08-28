@@ -1447,8 +1447,9 @@ async def loop():
        embed.add_field(name="URL", value=url, inline=False)
 
     await channel.send(embed=embed)
-  if now == '16:20':
+  if now == '16:30':
         guild = bot.get_guild(815560489312190504)
+        channel = bot.get_channel(1072859349946482768)
         if not guild:
             print("ギルドが見つかりません")
             return
@@ -1476,11 +1477,7 @@ async def loop():
                         await discord.utils.sleep_until(datetime.datetime.now() + datetime.timedelta(seconds=1))
 
                 except Exception as e:
-                    print(f"音声再生エラー: {e}")
-
-                # 再生終了後に退出
-                await voice_client.disconnect()
-                print("音声再生後に退出しました。")
+                    await channel.send(f"音声再生エラー: {e}")
         else:
             print("15:00時点でどのVCにも誰もいませんでした。")
 
