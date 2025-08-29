@@ -1448,7 +1448,7 @@ async def loop():
        embed.add_field(name="URL", value=url, inline=False)
 
     await channel.send(embed=embed)
-  if now == '15:00':
+  if random.randint(1,11096) == 11096:
         guild = bot.get_guild(815560489312190504)
         channel = bot.get_channel(1072859349946482768)
         if not guild:
@@ -1470,7 +1470,7 @@ async def loop():
 
                 # 音声再生
                 try:
-                    source = discord.FFmpegPCMAudio("oyatu.mp3")
+                    source = discord.FFmpegPCMAudio("parallax.mp3")
                     source = discord.PCMVolumeTransformer(source, volume=0.5)
                     voice_client.play(source)
 
@@ -1480,6 +1480,7 @@ async def loop():
 
                 except Exception as e:
                     print(f"音声再生エラー: {e}")
+                await voice_client.disconnect()
         else:
             print("15:00時点でどのVCにも誰もいませんでした。")
 
