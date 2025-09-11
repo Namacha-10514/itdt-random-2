@@ -1244,7 +1244,7 @@ async def _slash_random_minun(ctx, times: Option(int, required=False)):
 
 @bot.slash_command(name="random_diffname", description="差分名をランダムに表示します。")
 async def _slash_random_diffname(ctx):
-  response = requests.get('https://random-word-api.herokuapp.com/word')
+  response = requests.get('https://random-word-api.vercel.app/api?words=1&type=capitalized')
   await ctx.respond("[" + response.json()[0] + "]")
 
 @bot.slash_command(name="random_groupname", description="ITDT Random")
