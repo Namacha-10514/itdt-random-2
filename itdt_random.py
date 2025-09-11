@@ -781,6 +781,7 @@ async def _slash_dp_random_range_multi(ctx, times: Option(int,
         else:
           fnlevel = int(song_db_dp[rnd]['level'])
       title = song_db_dp[rnd]['title'].replace('_', '\_')
+      chlevel = song_db[rnd]['level']
       url = song_db_dp[rnd]['url']
       embed.add_field(name="[" + str(i + 1) + "]",
                       value="[Φ" + chlevel + " " + title + "](" + url + ")",
