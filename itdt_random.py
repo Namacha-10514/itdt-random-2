@@ -736,7 +736,7 @@ async def _slash_dp_random_multi(ctx, times: Option(int,
   embed = discord.Embed(title="ランダム選曲", color=0xff8080)
   for i in range(times):
     rnd = random.randrange(len(song_db_dp))
-    title = song_db_dp[rnd]['title'].replace('_', '\_')
+    title = song_db_dp[rnd]['title']
     chlevel = song_db_dp[rnd]['level']
     url = song_db_dp[rnd]['url']
     embed.add_field(name="[" + str(i + 1) + "]",
@@ -780,8 +780,8 @@ async def _slash_dp_random_range_multi(ctx, times: Option(int,
           fnlevel = 102
         else:
           fnlevel = int(song_db_dp[rnd]['level'])
-      title = song_db_dp[rnd]['title'].replace('_', '\_')
-      chlevel = song_db[rnd]['level']
+      title = song_db_dp[rnd]['title']
+      chlevel = song_db_dp[rnd]['level']
       url = song_db_dp[rnd]['url']
       embed.add_field(name="[" + str(i + 1) + "]",
                       value="[Φ" + chlevel + " " + title + "](" + url + ")",
