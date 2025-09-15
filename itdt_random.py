@@ -831,9 +831,9 @@ async def _slash_search_title(ctx, word: Option(str,
                                 required=False,
                                 default=False)):
   error = False
-  if len(word) < 2:
+  if len(word) < 1:
     embed_err = discord.Embed(title="エラー",
-                              description="検索語句は2文字以上にしてください。",
+                              description="検索語句は1文字以上にしてください。",
                               color=0xff8080)
     await ctx.respond(embed=embed_err, ephemeral=True)
     error = True
@@ -869,9 +869,9 @@ async def _slash_dp_search_title(ctx, word: Option(str,
                                 required=False,
                                 default=False)):
   error = False
-  if len(word) < 2:
+  if len(word) < 1:
     embed_err = discord.Embed(title="エラー",
-                              description="検索語句は2文字以上にしてください。",
+                              description="検索語句は1文字以上にしてください。",
                               color=0xff8080)
     await ctx.respond(embed=embed_err, ephemeral=True)
     error = True
