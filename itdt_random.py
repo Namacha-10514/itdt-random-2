@@ -1450,6 +1450,39 @@ async def loop():
        embed.add_field(name="URL", value=url, inline=False)
 
     await channel.send(embed=embed)
+    guild = bot.get_guild(815560489312190504)
+    channel = bot.get_channel(1070668559069495296)
+    if not guild: 
+        print("ギルドが見つかりません")
+        return
+
+    if channel and max_members > 0:
+        if not guild.voice_client:
+            voice_client = await target_channel.connect()
+            print(f"{target_channel} に参加しました！（人数: {max_members}）")
+
+            # 音声再生
+            try:
+                rand = random.randint(1,3)
+                if rand == 1:
+                  source = discord.FFmpegPCMAudio("Wordling Boys.wav")
+                elif rand == 2:
+                  source = discord.FFmpegPCMAudio("Wordles Humans.wav")
+                elif rand == 3:
+                  source = discord.FFmpegPCMAudio("Wordledoo.wav")
+                # source = discord.PCMVolumeTransformer(source, volume=0.5)
+                voice_client.play(source)
+
+                # 再生終了まで待つ
+                while voice_client.is_playing():
+                    await discord.utils.sleep_until(datetime.now() + timedelta(seconds=1))
+
+            except Exception as e:
+                print(f"音声再生エラー: {e}")
+            await voice_client.disconnect()
+    else:
+        print("00:00時点でどのVCにも誰もいませんでした。")
+
   if random.randint(1,11096) == 11096:
         guild = bot.get_guild(815560489312190504)
         channel = bot.get_channel(1072859349946482768)
