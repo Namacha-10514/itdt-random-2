@@ -1455,39 +1455,39 @@ async def loop():
 
     await channel.send(embed=embed)
 
-    if now == '01:10':
-      guild = bot.get_guild(815560489312190504)
-      channel = bot.get_channel(1070668559069495296)
-      if not guild: 
-          logger.info("ギルドが見つかりません")
-          return
+  if now == '01:17':
+    guild = bot.get_guild(815560489312190504)
+    channel = bot.get_channel(1070668559069495296)
+    if not guild: 
+        logger.info("ギルドが見つかりません")
+        return
 
-      if channel:
-          if not guild.voice_client:
-              voice_client = await channel.connect()
-              logger.info(f"{channel} に参加しました！")
+    if channel:
+        if not guild.voice_client:
+            voice_client = await channel.connect()
+            logger.info(f"{channel} に参加しました！")
 
-              # 音声再生
-              try:
-                  rand = random.randint(1,3)
-                  file_map = {
-                        1: "Wordling Boys.wav",
-                        2: "Wordles Humans.wav",
-                        3: "Wordledoo.wav",
-                  }
-                  source = discord.FFmpegPCMAudio(file_map[rand])
-                  # source = discord.PCMVolumeTransformer(source, volume=0.5)
-                  voice_client.play(source)
+            # 音声再生
+            try:
+                rand = random.randint(1,3)
+                file_map = {
+                      1: "Wordling Boys.wav",
+                      2: "Wordles Humans.wav",
+                      3: "Wordledoo.wav",
+                }
+                source = discord.FFmpegPCMAudio(file_map[rand])
+                # source = discord.PCMVolumeTransformer(source, volume=0.5)
+                voice_client.play(source)
 
-                  # 再生終了まで待つ
-                  while voice_client.is_playing():
-                    await asyncio.sleep(1)
+                # 再生終了まで待つ
+                while voice_client.is_playing():
+                  await asyncio.sleep(1)
 
-              except Exception as e:
-                  logger.info(f"音声再生エラー: {e}")
-              await voice_client.disconnect()
-      else:
-        logger.info("00:00時点でどのVCにも誰もいませんでした。")
+            except Exception as e:
+                logger.info(f"音声再生エラー: {e}")
+            await voice_client.disconnect()
+    else:
+      logger.info("00:00時点でどのVCにも誰もいませんでした。")
 
   if random.randint(1,2) == 2:
         guild = bot.get_guild(815560489312190504)
