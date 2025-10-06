@@ -1465,7 +1465,7 @@ async def loop():
       if channel:
           if not guild.voice_client:
               voice_client = await channel.connect()
-              logger.info(f"{channel} に参加しました！（人数: {max_members}）")
+              logger.info(f"{channel} に参加しました！")
 
               # 音声再生
               try:
@@ -1486,8 +1486,10 @@ async def loop():
               except Exception as e:
                   logger.info(f"音声再生エラー: {e}")
               await voice_client.disconnect()
+      else:
+        logger.info("00:00時点でどのVCにも誰もいませんでした。")
 
-  if random.randint(1,11096) == 11096:
+  if random.randint(1,2) == 2:
         guild = bot.get_guild(815560489312190504)
         channel = bot.get_channel(1072859349946482768)
         if not guild:
