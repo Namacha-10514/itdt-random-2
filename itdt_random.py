@@ -6,6 +6,7 @@ import requests
 import time
 import os
 import asyncio
+import logging
 
 from keep_alive import HealthCheckServer
 
@@ -144,6 +145,8 @@ ai_chan = [
   "「{0}」があります。\nこちらの曲はリズムが複雑で鮮やかなグラフィックとハイスキルの興奮が楽しめます。\n特にオンラインランキング戦で他のプレイヤーと競い合いだしたい方にオススメです！"
 ]
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @bot.slash_command(name="random", description="難易度表から1曲ランダムに表示します。")
 async def _slash_random(ctx, level: Option(str,
@@ -152,9 +155,9 @@ async def _slash_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -162,7 +165,7 @@ async def _slash_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db))
         fnlevel = song_db[rnd]['level']
   else:
@@ -210,7 +213,7 @@ async def _slash_random_range_multi(ctx, times: Option(int,
   if min < -1: min = 0
   if max > 104: max = 99
   if min > max:
-    print('incorrect')
+    logger.info('incorrect')
     embed_err = discord.Embed(title="エラー",
                               description="入力形式が正しくありません。",
                               color=0xff8080)
@@ -249,7 +252,7 @@ async def _slash_random_illegular(ctx, ):
   error = False
   fnlevel = None
   while fnlevel not in ["99", "???", "(^^)", "∞", "NaN"]:
-    #print('searching')
+    #logger.info('searching')
     rnd = random.randrange(len(song_db))
     fnlevel = song_db[rnd]['level']
   if error != True:
@@ -268,9 +271,9 @@ async def _slash_random_weighted(ctx):
   fnlevel = None
   level = random.choice(["0","0","0","0","0","1","1","1","1","1","2","2","2","2","2","3","3","3","3","3","4","4","4","4","4","5","5","5","5","5","6","6","6","6","6","7","7","7","7","7","8","8","8","8","8","9","9","9","9","9","10","10","10","10","10","11","11","11","12","12","12","13","13","13","14","14","14","15","15","15","16","17","18","19","20","21","22","23","24","25","99","99","99","99","99","∞","∞","∞","∞","∞","???","???","???","???","???","(^^)","(^^)","(^^)","(^^)","(^^)"])
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -278,7 +281,7 @@ async def _slash_random_weighted(ctx):
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db))
         fnlevel = song_db[rnd]['level']
   else:
@@ -309,9 +312,9 @@ async def _slash_random_with_option(
   fnlevel = None
   option_list = copy.copy(options[0])
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -319,7 +322,7 @@ async def _slash_random_with_option(
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db))
         fnlevel = song_db[rnd]['level']
   else:
@@ -332,17 +335,17 @@ async def _slash_random_with_option(
     error = True
   else:
     if not option_select:
-      print(option_list)
+      logger.info(option_list)
       if illegular >= 1:
         option_list.extend(options[1])
-        print(option_list)
+        logger.info(option_list)
         if illegular >= 2:
           option_list.extend(options[2])
-          print(option_list)
+          logger.info(option_list)
           if illegular == 3:
             option_list.extend(options[3])
-            print(option_list)
-      print(option_list)
+            logger.info(option_list)
+      logger.info(option_list)
       rnd_option = random.randrange(len(option_list))
       tmp_option = option_list[rnd_option]
     else:
@@ -402,7 +405,7 @@ async def _slash_random_range(ctx, min: Option(int,
   if min < -1: min = 0
   if max > 100: max = 99
   if min > max:
-    print('incorrect')
+    logger.info('incorrect')
     embed_err = discord.Embed(title="エラー",
                               description="入力形式が正しくありません。",
                               color=0xff8080)
@@ -478,7 +481,7 @@ async def _slash_random_dan(ctx, dan: Option(
       "ビギナー", "初段", "二段", "三段", "四段", "五段", "六段", "七段", "八段", "九段", "十段", "皆伝",
       "Overjoy", "Undefined", "Unplayable", "Thinking", "Test"
   ]:
-    print('not defined')
+    logger.info('not defined')
     embed_err = discord.Embed(title="エラー",
                               description="指定された段位は存在しません。",
                               color=0xff8080)
@@ -528,9 +531,9 @@ async def _slash_sl_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -538,7 +541,7 @@ async def _slash_sl_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db_sl))
         fnlevel = song_db_sl[rnd]['level']
   else:
@@ -561,12 +564,12 @@ async def _slash_lg_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in [
         "__", "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5", "6",
         "7", "8", "9", "10"
     ]:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -574,7 +577,7 @@ async def _slash_lg_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db_lg))
         fnlevel = song_db_lg[rnd]['level']
   else:
@@ -599,12 +602,12 @@ async def _slash_st_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in [
         "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "12", "13",
         "14", "15", "16", "17", "18", "19", "20"
     ]:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -612,7 +615,7 @@ async def _slash_st_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db_st))
         fnlevel = song_db_st[rnd]['level']
   else:
@@ -634,9 +637,9 @@ async def _slash_ds_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in ["0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11","12"]:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -644,7 +647,7 @@ async def _slash_ds_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db_ds))
         fnlevel = song_db_ds[rnd]['level']
   else:
@@ -666,9 +669,9 @@ async def _slash_dp_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels_dp:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -676,7 +679,7 @@ async def _slash_dp_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db_dp))
         fnlevel = song_db_dp[rnd]['level']
   else:
@@ -706,7 +709,7 @@ async def _slash_dp_random_range(ctx, min: Option(int,
   if min < -1: min = 0
   if max > 100: max = 99
   if min > max:
-    print('incorrect')
+    logger.info('incorrect')
     embed_err = discord.Embed(title="エラー",
                               description="入力形式が正しくありません。",
                               color=0xff8080)
@@ -762,7 +765,7 @@ async def _slash_dp_random_range_multi(ctx, times: Option(int,
   if min < -1: min = 0
   if max > 102: max = 99
   if min > max:
-    print('incorrect')
+    logger.info('incorrect')
     embed_err = discord.Embed(title="エラー",
                               description="入力形式が正しくありません。",
                               color=0xff8080)
@@ -800,7 +803,7 @@ async def _slash_random_tournament(ctx, id: Option(
   error = False
   fntournament = None
   if id not in all_tournament:
-    print('not defined')
+    logger.info('not defined')
     embed_err = discord.Embed(title="エラー",
                               description="指定された大会は存在しません。",
                               color=0xff8080)
@@ -808,7 +811,7 @@ async def _slash_random_tournament(ctx, id: Option(
     error = True
   else:
     while fntournament != id:
-      print('searching')
+      logger.info('searching')
       rnd = random.randrange(len(song_db_tm))
       fntournament = song_db_tm[rnd]['tnmid']
   if error != True:
@@ -1007,9 +1010,9 @@ async def _slash_brv1_random(ctx, keycode: Option(str,
       error = True
   else:
     if level:
-      print('not empty')
+      logger.info('not empty')
       if level not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13","???"]:
-        print('not defined')
+        logger.info('not defined')
         embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -1017,7 +1020,7 @@ async def _slash_brv1_random(ctx, keycode: Option(str,
         error = True
       else:
         while fnlevel != level:
-          #print('searching')
+          #logger.info('searching')
           rnd = random.randrange(len(song_db_pk))
           fnlevel = song_db_pk[rnd]['level']
     else:
@@ -1090,9 +1093,9 @@ async def _slash_psp_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -1100,7 +1103,7 @@ async def _slash_psp_random(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db_psp))
         fnlevel = song_db_psp[rnd]['level']
   else:
@@ -1283,9 +1286,9 @@ async def _slash_ai_chan(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -1293,7 +1296,7 @@ async def _slash_ai_chan(ctx, level: Option(str,
       error = True
     else:
       while fnlevel != level:
-        #print('searching')
+        #logger.info('searching')
         rnd = random.randrange(len(song_db))
         fnlevel = song_db[rnd]['level']
   else:
@@ -1317,9 +1320,9 @@ async def _slash_super_random(ctx, level: Option(str,
   error = False
   fnlevel = None
   if level:
-    print('not empty')
+    logger.info('not empty')
     if level not in all_levels:
-      print('not defined')
+      logger.info('not defined')
       embed_err = discord.Embed(title="エラー",
                                 description="指定された難易度は存在しません。",
                                 color=0xff8080)
@@ -1357,7 +1360,7 @@ async def _slash_super_random_range_multi(ctx, times: Option(int,
   if min < -1: min = 0
   if max > 104: max = 99
   if min > max:
-    print('incorrect')
+    logger.info('incorrect')
     embed_err = discord.Embed(title="エラー",
                               description="入力形式が正しくありません。",
                               color=0xff8080)
@@ -1391,7 +1394,7 @@ async def _slash_super_random_range_multi(ctx, times: Option(int,
 
 @bot.event
 async def on_ready():
-  print('log in')
+  logger.info('log in')
   loop.start()
   #activity = discord.Activity(name='14 Minesweeper Variants',
   #                            type=discord.ActivityType.playing)
@@ -1403,7 +1406,7 @@ async def on_ready():
 @tasks.loop(seconds=60)
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
-  #print(f"loop:{now}")
+  #logger.info(f"loop:{now}")
   if now == '00:00':
     global song_db
     global song_db_sl
@@ -1426,7 +1429,7 @@ async def loop():
     song_db_dp = json.loads(res_dp.text)
     song_db_pk = json.loads(res_pk.text)
 
-    print('songdb reloaded')
+    logger.info('songdb reloaded')
     
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
     channel = bot.get_channel(987348863641878528)
@@ -1456,13 +1459,13 @@ async def loop():
       guild = bot.get_guild(815560489312190504)
       channel = bot.get_channel(1070668559069495296)
       if not guild: 
-          print("ギルドが見つかりません")
+          logger.info("ギルドが見つかりません")
           return
 
       if channel:
           if not guild.voice_client:
               voice_client = await channel.connect()
-              print(f"{channel} に参加しました！（人数: {max_members}）")
+              logger.info(f"{channel} に参加しました！（人数: {max_members}）")
 
               # 音声再生
               try:
@@ -1481,14 +1484,14 @@ async def loop():
                     await asyncio.sleep(1)
 
               except Exception as e:
-                  print(f"音声再生エラー: {e}")
+                  logger.info(f"音声再生エラー: {e}")
               await voice_client.disconnect()
 
   if random.randint(1,11096) == 11096:
         guild = bot.get_guild(815560489312190504)
         channel = bot.get_channel(1072859349946482768)
         if not guild:
-            print("ギルドが見つかりません")
+            logger.info("ギルドが見つかりません")
             return
 
         # 一番人数が多いVCを探す
@@ -1502,7 +1505,7 @@ async def loop():
         if target_channel and max_members > 0:
             if not guild.voice_client:
                 voice_client = await target_channel.connect()
-                print(f"{target_channel} に参加しました！（人数: {max_members}）")
+                logger.info(f"{target_channel} に参加しました！（人数: {max_members}）")
 
                 # 音声再生
                 try:
@@ -1515,10 +1518,10 @@ async def loop():
                         await asyncio.sleep(1)
 
                 except Exception as e:
-                    print(f"音声再生エラー: {e}")
+                    logger.info(f"音声再生エラー: {e}")
                 await voice_client.disconnect()
         else:
-            print("15:00時点でどのVCにも誰もいませんでした。")
+            logger.info("15:00時点でどのVCにも誰もいませんでした。")
 
 async def ad_send(ctx):
   embed = discord.Embed(title="【広告】", color=0xff8080)
