@@ -1451,17 +1451,17 @@ async def loop():
 
     await channel.send(embed=embed)
 
-    if now == '00:30':
+    if now == '00:45':
       guild = bot.get_guild(815560489312190504)
       channel = bot.get_channel(1070668559069495296)
       if not guild: 
           print("ギルドが見つかりません")
           return
 
-      if channel and max_members > 0:
+      if channel:
           if not guild.voice_client:
-              voice_client = await target_channel.connect()
-              print(f"{target_channel} に参加しました！（人数: {max_members}）")
+              voice_client = await channel.connect()
+              print(f"{channel} に参加しました！（人数: {max_members}）")
 
               # 音声再生
               try:
@@ -1482,8 +1482,6 @@ async def loop():
               except Exception as e:
                   print(f"音声再生エラー: {e}")
               await voice_client.disconnect()
-      else:
-          print("00:00時点でどのVCにも誰もいませんでした。")
 
   if random.randint(1,11096) == 11096:
         guild = bot.get_guild(815560489312190504)
