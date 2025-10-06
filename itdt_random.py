@@ -5,6 +5,7 @@ import random
 import requests
 import time
 import os
+import asyncio
 
 from keep_alive import HealthCheckServer
 
@@ -1451,7 +1452,7 @@ async def loop():
 
     await channel.send(embed=embed)
 
-    if now == '00:45':
+    if now == '00:55':
       guild = bot.get_guild(815560489312190504)
       channel = bot.get_channel(1070668559069495296)
       if not guild: 
@@ -1466,18 +1467,18 @@ async def loop():
               # 音声再生
               try:
                   rand = random.randint(1,3)
-                  if rand == 1:
-                    source = discord.FFmpegPCMAudio("Wordling Boys.wav")
-                  elif rand == 2:
-                    source = discord.FFmpegPCMAudio("Wordles Humans.wav")
-                  elif rand == 3:
-                    source = discord.FFmpegPCMAudio("Wordledoo.wav")
+                  file_map = {
+                        1: "Wordling Boys.wav",
+                        2: "Wordles Humans.wav",
+                        3: "Wordledoo.wav",
+                  }
+                  source = discord.FFmpegPCMAudio(file_map[rand])
                   # source = discord.PCMVolumeTransformer(source, volume=0.5)
                   voice_client.play(source)
 
                   # 再生終了まで待つ
                   while voice_client.is_playing():
-                      await discord.utils.sleep_until(datetime.now() + timedelta(seconds=1))
+                    await asyncio.sleep(1)
 
               except Exception as e:
                   print(f"音声再生エラー: {e}")
@@ -1511,7 +1512,7 @@ async def loop():
 
                     # 再生終了まで待つ
                     while voice_client.is_playing():
-                        await discord.utils.sleep_until(datetime.now() + timedelta(seconds=1))
+                        await asyncio.sleep(1)
 
                 except Exception as e:
                     print(f"音声再生エラー: {e}")
