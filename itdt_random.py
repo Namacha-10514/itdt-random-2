@@ -1455,7 +1455,7 @@ async def loop():
 
     await channel.send(embed=embed)
 
-    if now == '01:02':
+    if now == '01:10':
       guild = bot.get_guild(815560489312190504)
       channel = bot.get_channel(1070668559069495296)
       if not guild: 
