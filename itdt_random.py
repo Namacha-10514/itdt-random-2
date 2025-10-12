@@ -145,7 +145,7 @@ ai_chan = [
   "「{0}」があります。\nこちらの曲はリズムが複雑で鮮やかなグラフィックとハイスキルの興奮が楽しめます。\n特にオンラインランキング戦で他のプレイヤーと競い合いだしたい方にオススメです！"
 ]
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
 
 @bot.slash_command(name="random", description="難易度表から1曲ランダムに表示します。")
@@ -1461,7 +1461,7 @@ async def loop():
         logger.info("ギルドが見つかりません")
         return
 
-    if channel:
+    if voice_channel:
         if not guild.voice_client:
             voice_client = await voice_channel.connect()
             logger.info(f"{voice_channel} に参加しました！")
