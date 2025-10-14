@@ -6,6 +6,7 @@ import requests
 import time
 import os
 import asyncio
+import aiohttp
 import logging
 
 from keep_alive import HealthCheckServer
@@ -1408,26 +1409,21 @@ async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
   if now == '00:00':
-    global song_db
-    global song_db_sl
-    global song_db_lg
-    global song_db_st
-    global song_db_dp
-    global song_db_pk
+    global song_db ,song_db_sl , song_db_lg , song_db_st , song_db_dp ,song_db_pk
     
-    res = requests.get(db_url)
-    res_sl = requests.get(db_url_sl)
-    res_lg = requests.get(db_url_lg)
-    res_st = requests.get(db_url_st)
-    res_dp = requests.get(db_url_dp)
-    res_pk = requests.get(db_url_pk)
+    async with aiohttp.ClientSession() as session:
+        async def get_json(url):
+            async with session.get(url) as res:
+                return await res.json()
 
-    song_db = json.loads(res.text)
-    song_db_sl = json.loads(res_sl.text)
-    song_db_lg = json.loads(res_lg.text)
-    song_db_st = json.loads(res_st.text)
-    song_db_dp = json.loads(res_dp.text)
-    song_db_pk = json.loads(res_pk.text)
+        song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = await asyncio.gather(
+            get_json(db_url),
+            get_json(db_url_sl),
+            get_json(db_url_lg),
+            get_json(db_url_st),
+            get_json(db_url_dp),
+            get_json(db_url_pk),
+        )
 
     logger.info('songdb reloaded')
     
