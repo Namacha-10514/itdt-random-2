@@ -1396,7 +1396,8 @@ async def _slash_super_random_range_multi(ctx, times: Option(int,
 @bot.event
 async def on_ready():
   logger.info('log in')
-  loop.start()
+  if not loop.is_running():
+    loop.start()
   #activity = discord.Activity(name='14 Minesweeper Variants',
   #                            type=discord.ActivityType.playing)
   activity = discord.Activity(name='ITDTの譜面',
@@ -1408,7 +1409,7 @@ async def on_ready():
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
-  if now == '00:00':
+  if now == '00:':
     global song_db ,song_db_sl , song_db_lg , song_db_st , song_db_dp ,song_db_pk
     
     async with aiohttp.ClientSession() as session:
@@ -1430,59 +1431,60 @@ async def loop():
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
     channel = bot.get_channel(987348863641878528)
 
-    if (db_shuffle < len(song_db)):
-       rnd = db_shuffle
-       title = song_db[rnd]['title']
-       chlevel = song_db[rnd]['level']
-       url = song_db[rnd]['url']
-       embed = discord.Embed(title="今日の譜面", color=0xff8080)
-       embed.add_field(name="曲名", value=title, inline=False)
-       embed.add_field(name="難易度", value="★" + chlevel, inline=False)
-       embed.add_field(name="URL", value=url, inline=False)
+    if db_shuffle < len(song_db):
+        rnd = db_shuffle
+        title = song_db[rnd]['title']
+        chlevel = song_db[rnd]['level']
+        url = song_db[rnd]['url']
+        mark = "★"
     else:
-       rnd = db_shuffle - len(song_db)
-       title = song_db_dp[rnd]['title']
-       chlevel = song_db_dp[rnd]['level']
-       url = song_db_dp[rnd]['url']
-       embed = discord.Embed(title="今日の譜面", color=0xff8080)
-       embed.add_field(name="曲名", value=title, inline=False)
-       embed.add_field(name="難易度", value="Φ" + chlevel, inline=False)
-       embed.add_field(name="URL", value=url, inline=False)
+        rnd = db_shuffle - len(song_db)
+        title = song_db_dp[rnd]['title']
+        chlevel = song_db_dp[rnd]['level']
+        url = song_db_dp[rnd]['url']
+        mark = "Φ"
+
+    embed = discord.Embed(title="今日の譜面", color=0xff8080)
+    embed.add_field(name="曲名", value=title, inline=False)
+    embed.add_field(name="難易度", value=f"{mark}{chlevel}", inline=False)
+    embed.add_field(name="URL", value=url, inline=False)
+    await channel.send(embed=embed)
 
     await channel.send(embed=embed)
 
     guild = bot.get_guild(815560489312190504)
     voice_channel = bot.get_channel(1070668559069495296)
-    if not guild: 
-        logger.info("ギルドが見つかりません")
+    if not guild or not voice_channel:
+        logger.info("ギルドまたはチャンネルが見つかりません")
         return
 
-    if voice_channel:
-        if not guild.voice_client:
-            voice_client = await voice_channel.connect()
-            logger.info(f"{voice_channel} に参加しました！")
+    vc = discord.utils.get(bot.voice_clients, guild=guild)
+    if vc and vc.is_connected():
+        logger.info("既にVC接続中なのでスキップ")
+        return
+    try:
+        voice_client = await voice_channel.connect(reconnect=False)
+        logger.info(f"{voice_channel} に参加しました！")
 
-            # 音声再生
-            try:
-                rand = random.randint(1,3)
-                file_map = {
-                      1: "Wordling Boys.wav",
-                      2: "Wordles Humans.wav",
-                      3: "Wordledoo.wav",
-                }
-                source = discord.FFmpegPCMAudio(file_map[rand])
-                # source = discord.PCMVolumeTransformer(source, volume=0.5)
-                voice_client.play(source)
+        rand = random.randint(1, 3)
+        file_map = {
+            1: "Wordling Boys.wav",
+            2: "Wordles Humans.wav",
+            3: "Wordledoo.wav",
+        }
+        source = discord.FFmpegPCMAudio(file_map[rand])
+        voice_client.play(source)
 
-                # 再生終了まで待つ
-                while voice_client.is_playing():
-                  await asyncio.sleep(1)
+        while voice_client.is_playing():
+            await asyncio.sleep(1)
 
-            except Exception as e:
-                logger.info(f"音声再生エラー: {e}")
-            await voice_client.disconnect()
-    else:
-      logger.info("00:00時点でどのVCにも誰もいませんでした。")
+        await voice_client.disconnect()
+
+    except discord.ClientException as e:
+        logger.info(f"VC接続中に例外（既に接続済みなど）: {e}")
+    except Exception as e:
+        logger.info(f"音声接続エラー: {e}")
+
 
   if random.randint(1,11096) == 11096:
         guild = bot.get_guild(815560489312190504)
