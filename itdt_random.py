@@ -1409,7 +1409,7 @@ async def on_ready():
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
-  if now == '00:20':
+  if now == '00:36':
     global song_db ,song_db_sl , song_db_lg , song_db_st , song_db_dp ,song_db_pk
     
     async with aiohttp.ClientSession() as session:
