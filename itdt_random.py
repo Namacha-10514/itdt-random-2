@@ -1404,29 +1404,12 @@ async def on_ready():
                               type=discord.ActivityType.playing)
   await bot.change_presence(activity=activity)
 
-
 @tasks.loop(seconds=60)
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
-  if now == '00:36':
-    global song_db ,song_db_sl , song_db_lg , song_db_st , song_db_dp ,song_db_pk
-    
-    async with aiohttp.ClientSession() as session:
-        async def get_json(url):
-            async with session.get(url) as res:
-                return await res.json()
-
-        song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = await asyncio.gather(
-            get_json(db_url),
-            get_json(db_url_sl),
-            get_json(db_url_lg),
-            get_json(db_url_st),
-            get_json(db_url_dp),
-            get_json(db_url_pk),
-        )
-
-    logger.info('songdb reloaded')
+  if now == '00:40':
+    asyncio.create_task(fetch_song_dbs())
     
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
     channel = bot.get_channel(987348863641878528)
@@ -1522,6 +1505,24 @@ async def loop():
         else:
             logger.info("15:00時点でどのVCにも誰もいませんでした。")
 
+async def fetch_song_dbs():
+  global song_db ,song_db_sl , song_db_lg , song_db_st , song_db_dp ,song_db_pk
+    
+  async with aiohttp.ClientSession() as session:
+      async def get_json(url):
+          async with session.get(url) as res:
+              return await res.json()
+
+      song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = await asyncio.gather(
+          get_json(db_url),
+          get_json(db_url_sl),
+          get_json(db_url_lg),
+          get_json(db_url_st),
+          get_json(db_url_dp),
+          get_json(db_url_pk),
+      )
+  logger.info('songdb reloaded')
+  
 async def ad_send(ctx):
   embed = discord.Embed(title="【広告】", color=0xff8080)
   embed.add_field(name="放置少女",
