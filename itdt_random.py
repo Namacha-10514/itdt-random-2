@@ -1408,7 +1408,7 @@ async def on_ready():
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
-  if now == '00:40':
+  if now == '00:00':
     asyncio.create_task(fetch_song_dbs())
     
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
@@ -1431,8 +1431,6 @@ async def loop():
     embed.add_field(name="曲名", value=title, inline=False)
     embed.add_field(name="難易度", value=f"{mark}{chlevel}", inline=False)
     embed.add_field(name="URL", value=url, inline=False)
-    await channel.send(embed=embed)
-
     await channel.send(embed=embed)
 
     guild = bot.get_guild(815560489312190504)
@@ -1508,19 +1506,33 @@ async def loop():
 async def fetch_song_dbs():
   global song_db ,song_db_sl , song_db_lg , song_db_st , song_db_dp ,song_db_pk
     
-  async with aiohttp.ClientSession() as session:
-      async def get_json(url):
-          async with session.get(url) as res:
-              return await res.json()
+  try:
+      timeout = aiohttp.ClientTimeout(total=15)
+      async with aiohttp.ClientSession(timeout=timeout) as session:
+          async def get_json(url):
+              async with session.get(url) as res:
+                  res.raise_for_status()
+                  return await res.json()
 
-      song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = await asyncio.gather(
-          get_json(db_url),
-          get_json(db_url_sl),
-          get_json(db_url_lg),
-          get_json(db_url_st),
-          get_json(db_url_dp),
-          get_json(db_url_pk),
-      )
+          results = await asyncio.gather(
+              get_json(db_url),
+              get_json(db_url_sl),
+              get_json(db_url_lg),
+              get_json(db_url_st),
+              get_json(db_url_dp),
+              get_json(db_url_pk),
+              return_exceptions=True
+          )
+
+          # エラーが含まれていたらログに出す
+          for i, r in enumerate(results):
+              if isinstance(r, Exception):
+                  print(f"DB{i}取得失敗: {r}")
+
+          song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = results
+  except Exception as e:
+      print(f"update_song_dbエラー: {e}")
+
   logger.info('songdb reloaded')
   
 async def ad_send(ctx):
