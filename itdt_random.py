@@ -1408,7 +1408,7 @@ async def on_ready():
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
-  if now == '00:00':
+  if now == '14:23':
     asyncio.create_task(fetch_song_dbs())
     
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
@@ -1431,7 +1431,7 @@ async def loop():
     embed.add_field(name="曲名", value=title, inline=False)
     embed.add_field(name="難易度", value=f"{mark}{chlevel}", inline=False)
     embed.add_field(name="URL", value=url, inline=False)
-    await channel.send(embed=embed)
+    #await channel.send(embed=embed)
 
     guild = bot.get_guild(815560489312190504)
     voice_channel = bot.get_channel(1070668559069495296)
