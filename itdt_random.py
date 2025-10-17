@@ -1408,7 +1408,7 @@ async def on_ready():
 async def loop():
   now = datetime.now(ZoneInfo("Asia/Tokyo")).strftime('%H:%M')
   #logger.info(f"loop:{now}")
-  if now == '14:23':
+  if now == '00:00':
     asyncio.create_task(fetch_song_dbs())
     
     db_shuffle = random.randrange((len(song_db) + len(song_db_dp)))
@@ -1454,7 +1454,14 @@ async def loop():
             3: "Wordledoo.wav",
         }
         source = discord.FFmpegPCMAudio(file_map[rand])
-        voice_client.play(source)
+
+        def after_playing(error):
+          if error:
+              logger.error(f"再生中エラー: {error}")
+          asyncio.run_coroutine_threadsafe(voice_client.disconnect(), bot.loop)
+          logger.info("再生終了→切断完了")
+
+        voice_client.play(source, after=after_playing)
 
         while voice_client.is_playing():
             await asyncio.sleep(1)
