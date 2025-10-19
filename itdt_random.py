@@ -1456,13 +1456,7 @@ async def loop():
         }
         source = discord.FFmpegPCMAudio(file_map[rand])
 
-        def after_playing(error):
-          if error:
-              logger.error(f"再生中エラー: {error}")
-          asyncio.run_coroutine_threadsafe(voice_client.disconnect(), bot.loop)
-          logger.info("再生終了→切断完了")
-
-        voice_client.play(source, after=after_playing)
+        voice_client.play(source)
 
         while voice_client.is_playing():
             await asyncio.sleep(1)
