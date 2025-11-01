@@ -1431,7 +1431,7 @@ async def loop():
     embed.add_field(name="曲名", value=title, inline=False)
     embed.add_field(name="難易度", value=f"{mark}{chlevel}", inline=False)
     embed.add_field(name="URL", value=url, inline=False)
-    #await channel.send(embed=embed)
+    await channel.send(embed=embed)
     
   if now == '00:02':
     guild = bot.get_guild(815560489312190504)
