@@ -1433,40 +1433,40 @@ async def loop():
     embed.add_field(name="URL", value=url, inline=False)
     await channel.send(embed=embed)
     
-  if now == '00:02':
-    guild = bot.get_guild(815560489312190504)
-    voice_channel = bot.get_channel(1070668559069495296)
-    if not guild or not voice_channel:
-        logger.info("ギルドまたはチャンネルが見つかりません")
-        return
+  # if now == '00:02':
+  #   guild = bot.get_guild(815560489312190504)
+  #   voice_channel = bot.get_channel(1070668559069495296)
+  #   if not guild or not voice_channel:
+  #       logger.info("ギルドまたはチャンネルが見つかりません")
+  #       return
 
-    vc = discord.utils.get(bot.voice_clients, guild=guild)
-    if vc and vc.is_connected():
-        logger.info("既にVC接続中なのでスキップ")
-        return
-    try:
-        voice_client = await voice_channel.connect(reconnect=False)
-        logger.info(f"{voice_channel} に参加しました！")
+  #   vc = discord.utils.get(bot.voice_clients, guild=guild)
+  #   if vc and vc.is_connected():
+  #       logger.info("既にVC接続中なのでスキップ")
+  #       return
+  #   try:
+  #       voice_client = await voice_channel.connect(reconnect=False)
+  #       logger.info(f"{voice_channel} に参加しました！")
 
-        rand = random.randint(1, 3)
-        file_map = {
-            1: "Wordling Boys.wav",
-            2: "Wordles Humans.wav",
-            3: "Wordledoo.wav",
-        }
-        source = discord.FFmpegPCMAudio(file_map[rand])
+  #       rand = random.randint(1, 3)
+  #       file_map = {
+  #           1: "Wordling Boys.wav",
+  #           2: "Wordles Humans.wav",
+  #           3: "Wordledoo.wav",
+  #       }
+  #       source = discord.FFmpegPCMAudio(file_map[rand])
 
-        voice_client.play(source)
+  #       voice_client.play(source)
 
-        while voice_client.is_playing():
-            await asyncio.sleep(1)
+  #       while voice_client.is_playing():
+  #           await asyncio.sleep(1)
 
-        await voice_client.disconnect()
+  #       await voice_client.disconnect()
 
-    except discord.ClientException as e:
-        logger.info(f"VC接続中に例外（既に接続済みなど）: {e}")
-    except Exception as e:
-        logger.info(f"音声接続エラー: {e}")
+  #   except discord.ClientException as e:
+  #       logger.info(f"VC接続中に例外（既に接続済みなど）: {e}")
+  #   except Exception as e:
+  #       logger.info(f"音声接続エラー: {e}")
 
 
   if random.randint(1,11096) == 11096:
