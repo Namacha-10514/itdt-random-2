@@ -39,21 +39,21 @@ db_url_dp = "https://script.google.com/macros/s/AKfycbx1495yVN50lyffmhaDx69jDma8
 
 file_kj = open('kanji.json', 'r')
 
-res = requests.get(db_url)
-res_sl = requests.get(db_url_sl)
-res_lg = requests.get(db_url_lg)
-res_st = requests.get(db_url_st)
-res_ds = requests.get(db_url_ds)
-res_tm = requests.get(db_url_tm)
+res = requests.get(db_url, timeout=30)
+res_sl = requests.get(db_url_sl, timeout=30)
+res_lg = requests.get(db_url_lg, timeout=30)
+res_st = requests.get(db_url_st, timeout=30)
+res_ds = requests.get(db_url_ds, timeout=30)
+res_tm = requests.get(db_url_tm, timeout=30)
 
-res_hd = requests.get(db_url_hd)
-res_ez = requests.get(db_url_ez)
-res_sg = requests.get(db_url_sg)
-res_nds = requests.get(db_url_nds)
-res_psp = requests.get(db_url_psp)
-res_pk = requests.get(db_url_pk)
+res_hd = requests.get(db_url_hd, timeout=30)
+res_ez = requests.get(db_url_ez, timeout=30)
+res_sg = requests.get(db_url_sg, timeout=30)
+res_nds = requests.get(db_url_nds, timeout=30)
+res_psp = requests.get(db_url_psp, timeout=30)
+res_pk = requests.get(db_url_pk, timeout=30)
 
-res_dp = requests.get(db_url_dp)
+res_dp = requests.get(db_url_dp, timeout=30)
 
 res_kj = file_kj.read()
 
