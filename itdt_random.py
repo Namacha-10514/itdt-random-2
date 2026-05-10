@@ -146,6 +146,8 @@ ai_chan = [
   "「{0}」があります。\nこちらの曲はリズムが複雑で鮮やかなグラフィックとハイスキルの興奮が楽しめます。\n特にオンラインランキング戦で他のプレイヤーと競い合いだしたい方にオススメです！"
 ]
 
+keyconf_numbers = [8, 9, 13, 16, 17, 18, 32, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 113, 115, 116, 117, 145, 186, 187, 188, 189, 190, 191, 192, 219, 220, 221, 222, 226]
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -1124,10 +1126,10 @@ async def _slash_psp_random(ctx, level: Option(str,
   description="keyconf.iniをランダムに生成します。",
 )
 async def _slash_random_keyconf(ctx):
-  rnd_1 = random.randrange(48, 91)
-  rnd_2 = random.randrange(48, 91)
-  rnd_3 = random.randrange(48, 91)
-  rnd_4 = random.randrange(48, 91)
+  rnd_1 = random.choice(keyconf_numbers)
+  rnd_2 = random.choice(keyconf_numbers)
+  rnd_3 = random.choice(keyconf_numbers)
+  rnd_4 = random.choice(keyconf_numbers)
 
   templete = "```\n[KeyAssignment]\nL_KaP1={0}\nL_DongP1={1}\nR_DongP1={2}\nR_KaP1={3}\n```"
   text = templete.format(rnd_1, rnd_2, rnd_3, rnd_4)
