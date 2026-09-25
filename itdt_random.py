@@ -39,39 +39,42 @@ db_url_dp = "https://script.google.com/macros/s/AKfycbx1495yVN50lyffmhaDx69jDma8
 
 file_kj = open('kanji.json', 'r')
 
-res = requests.get(db_url, timeout=30)
-res_sl = requests.get(db_url_sl, timeout=30)
-res_lg = requests.get(db_url_lg, timeout=30)
-res_st = requests.get(db_url_st, timeout=30)
-res_ds = requests.get(db_url_ds, timeout=30)
-res_tm = requests.get(db_url_tm, timeout=30)
 
-res_hd = requests.get(db_url_hd, timeout=30)
-res_ez = requests.get(db_url_ez, timeout=30)
-res_sg = requests.get(db_url_sg, timeout=30)
-res_nds = requests.get(db_url_nds, timeout=30)
-res_psp = requests.get(db_url_psp, timeout=30)
-res_pk = requests.get(db_url_pk, timeout=30)
+def fetch_json_with_retry(url, retries=3, timeout=30, backoff=5):
+    """起動時のDB取得用: 失敗した場合は指定回数リトライしてからJSONを返す。
+    全て失敗した場合は最後の例外をそのまま送出する。"""
+    last_exc = None
+    for attempt in range(1, retries + 1):
+        try:
+            res = requests.get(url, timeout=timeout)
+            res.raise_for_status()
+            return json.loads(res.text)
+        except Exception as e:
+            last_exc = e
+            print(f"[起動時DB取得] {url} 失敗 ({attempt}/{retries}回目): {e}")
+            if attempt < retries:
+                time.sleep(backoff)
+    print(f"[起動時DB取得] {url} を{retries}回試しましたが取得できませんでした。")
+    raise last_exc
 
-res_dp = requests.get(db_url_dp, timeout=30)
+
+song_db     = fetch_json_with_retry(db_url)
+song_db_sl  = fetch_json_with_retry(db_url_sl)
+song_db_lg  = fetch_json_with_retry(db_url_lg)
+song_db_st  = fetch_json_with_retry(db_url_st)
+song_db_ds  = fetch_json_with_retry(db_url_ds)
+song_db_tm  = fetch_json_with_retry(db_url_tm)
+
+song_db_hd  = fetch_json_with_retry(db_url_hd)
+song_db_ez  = fetch_json_with_retry(db_url_ez)
+song_db_sg  = fetch_json_with_retry(db_url_sg)
+song_db_nds = fetch_json_with_retry(db_url_nds)
+song_db_psp = fetch_json_with_retry(db_url_psp)
+song_db_pk  = fetch_json_with_retry(db_url_pk)
+
+song_db_dp  = fetch_json_with_retry(db_url_dp)
 
 res_kj = file_kj.read()
-
-song_db = json.loads(res.text)
-song_db_sl = json.loads(res_sl.text)
-song_db_lg = json.loads(res_lg.text)
-song_db_st = json.loads(res_st.text)
-song_db_ds = json.loads(res_ds.text)
-song_db_hd = json.loads(res_hd.text)
-song_db_tm = json.loads(res_tm.text)
-song_db_ez = json.loads(res_ez.text)
-song_db_sg = json.loads(res_sg.text)
-song_db_nds = json.loads(res_nds.text)
-song_db_psp = json.loads(res_psp.text)
-song_db_pk = json.loads(res_pk.text)
-
-song_db_dp = json.loads(res_dp.text)
-
 kanji_db = json.loads(res_kj)
 
 TOKEN = os.getenv("DISCORD_TOKEN")
