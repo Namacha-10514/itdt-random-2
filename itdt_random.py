@@ -1528,12 +1528,26 @@ async def fetch_song_dbs():
               return_exceptions=True
           )
 
-          # エラーが含まれていたらログに出す
-          for i, r in enumerate(results):
-              if isinstance(r, Exception):
-                  print(f"DB{i}取得失敗: {r}")
+          # エラーが含まれていたらログに出し、失敗したDBは更新しない(直前の値を維持する)
+          names = ["song_db", "song_db_sl", "song_db_lg", "song_db_st", "song_db_dp", "song_db_pk"]
+          current = {
+              "song_db": song_db,
+              "song_db_sl": song_db_sl,
+              "song_db_lg": song_db_lg,
+              "song_db_st": song_db_st,
+              "song_db_dp": song_db_dp,
+              "song_db_pk": song_db_pk,
+          }
 
-          song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = results
+          new_values = []
+          for name, r in zip(names, results):
+              if isinstance(r, Exception):
+                  print(f"DB{name}取得失敗: {r}")
+                  new_values.append(current[name])  # 失敗した場合は古い値を維持
+              else:
+                  new_values.append(r)
+
+          song_db, song_db_sl, song_db_lg, song_db_st, song_db_dp, song_db_pk = new_values
   except Exception as e:
       print(f"update_song_dbエラー: {e}")
 
