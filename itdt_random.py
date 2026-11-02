@@ -1149,12 +1149,18 @@ async def _slash_random_number(ctx, min: Option(int, required=True),
 async def _slash_random_number_multi(ctx, min:   Option(int,  required=True),
                                           max:   Option(int,  required=True),
                                           times: Option(int,  required=True),
-                                          sort:  Option(bool, default=False)):
+                                          sort:  Option(bool, default=False),
+                                          dupl:  Option(bool, default=False)):
   rnd = []
-  for i in range(times):
-    rnd.append(random.randint(min, max))
-  if (sort == True):
-    rnd.sort()
+  if (dupl == False):
+    for i in range(times):
+      rnd.append(random.randint(min, max))
+    if (sort == True):
+      rnd.sort()
+  else:
+    rnd = random.sample(range(min, max + 1), times)
+    if (sort == True):
+      rnd.sort()
   await ctx.respond(rnd)
 
 # @bot.slash_command(name="bingo", description="ビンゴの条件を表示します。")
